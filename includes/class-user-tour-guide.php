@@ -157,6 +157,15 @@ class User_Tour_Guide {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
+		//Register menu page
+		$this->loader->add_action( 'admin_menu', $plugin_admin, 'user_tour_guide_settings_page' );
+
+		// Ajax Actions
+		$this->loader->add_action( 'wp_ajax_utg_get_tour_data_from_db', $plugin_admin, 'utg_get_tour_data_from_db' );
+		$this->loader->add_action( 'wp_ajax_nopriv_utg_get_tour_data_from_db', $plugin_admin, 'utg_get_tour_data_from_db' );
+		$this->loader->add_action( 'wp_ajax_utg_add_steps_to_db', $plugin_admin, 'utg_add_steps_to_db' );
+		$this->loader->add_action( 'wp_ajax_nopriv_utg_add_steps_to_db', $plugin_admin, 'utg_add_steps_to_db' );
+
 	}
 
 	/**
