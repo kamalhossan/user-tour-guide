@@ -29,4 +29,30 @@
 	 * practising this, we should strive to set a better example in our own work.
 	 */
 
+	$(function(){
+		
+		const publicTour = new tourguide.TourGuideClient({
+			showStepProgress: false,
+			showStepDots: false,
+			exitOnClickOutside: false,
+		});
+
+		$.ajax({
+			type: 'GET',
+			url: utg_public_object.ajax_url,
+			data: {
+				action: 'utg_get_user_tour_data_from_db',
+				nonce: utg_public_object.nonce,
+			},
+			success: function (response) {
+				// console.log(response);
+				publicTour.addSteps(response)
+				publicTour.start("user-tour-guide");
+			},
+			error: function (error) {
+				console.log(error);
+			}
+		});
+	});
+
 })( jQuery );

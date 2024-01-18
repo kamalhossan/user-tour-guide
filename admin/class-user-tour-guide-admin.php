@@ -123,36 +123,36 @@ class User_Tour_Guide_Admin {
 
 		<?php
 		// Get the active tab from the $_GET param
-		$default_tab = 'create_tour';
-		$active_tab  = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : $default_tab; // // phpcs:ignore csrf ok, sanitization ok. 
-		?>
+		// $default_tab = 'create_tour';
+		// $active_tab  = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : $default_tab; // // phpcs:ignore csrf ok, sanitization ok. 
+		// ?>
 
-		<h2 class="nav-tab-wrapper">
+		<!-- <h2 class="nav-tab-wrapper">
 			<a href="?page=user_tour_guide&tab=create_tour"
-				class="nav-tab create-tour <?php echo $active_tab == 'create_tour' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Create a Tour', 'user-tour-guide' ); ?></a>
+				class="nav-tab create-tour <?php // echo $active_tab == 'create_tour' ? 'nav-tab-active' : ''; ?>"><?php // esc_html_e( 'Create a Tour', 'user-tour-guide' ); ?></a>
 			<a href="?page=user_tour_guide&tab=tour_options"
-				class="nav-tab tour-options <?php echo $active_tab == 'tour_options' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Tour Options', 'user-tour-guide' ); ?></a>
+				class="nav-tab tour-options <?php // echo $active_tab == 'tour_options' ? 'nav-tab-active' : ''; ?>"><?php // esc_html_e( 'Tour Options', 'user-tour-guide' ); ?></a>
 			<a href="?page=user_tour_guide&tab=style"
-				class="nav-tab tour-style <?php echo $active_tab == 'style' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Style', 'user-tour-guide' ); ?></a>
+				class="nav-tab tour-style <?php // echo $active_tab == 'style' ? 'nav-tab-active' : ''; ?>"><?php // esc_html_e( 'Style', 'user-tour-guide' ); ?></a>
 			<a href="?page=user_tour_guide&tab=faq"
-				class="nav-tab tour-faq <?php echo $active_tab == 'style' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'FAQ', 'user-tour-guide' ); ?></a>
-		</h2>
+				class="nav-tab tour-faq <?php // echo $active_tab == 'style' ? 'nav-tab-active' : ''; ?>"><?php // esc_html_e( 'FAQ', 'user-tour-guide' ); ?></a>
+		</h2> -->
 
 		<?php
-		switch ( $active_tab ) :
-			case 'create_tour':
-				include_once plugin_dir_path( __FILE__ ) . 'partials/form-create.php';
-				break;
-			case 'tour_options':
-				include_once plugin_dir_path( __FILE__ ) . 'partials/form-general.php';
-				break;
-			case 'style':
-				include_once plugin_dir_path( __FILE__ ) . 'partials/form-color-picker.php';
-				break;
-			case 'faq':
-				include_once plugin_dir_path( __FILE__ ) . 'partials/faq.php';
-				break;
-		endswitch;
+		// switch ( $active_tab ) :
+		// 	case 'create_tour':
+		// 		include_once plugin_dir_path( __FILE__ ) . 'partials/form-create.php';
+		// 		break;
+		// 	case 'tour_options':
+		// 		include_once plugin_dir_path( __FILE__ ) . 'partials/form-general.php';
+		// 		break;
+		// 	case 'style':
+		// 		include_once plugin_dir_path( __FILE__ ) . 'partials/form-color-picker.php';
+		// 		break;
+		// 	case 'faq':
+		// 		include_once plugin_dir_path( __FILE__ ) . 'partials/faq.php';
+		// 		break;
+		// endswitch;
 
 		// include admin modal
 		include_once plugin_dir_path( __FILE__ ) . 'partials/admin-modal.php';
@@ -250,7 +250,7 @@ class User_Tour_Guide_Admin {
 		$step_order =sanitize_text_field($_POST['stepOrder']);
 
 		$tour_name = 'User Tour Guide';
-		$tour_name = str_replace(' ', '-', $tour_name);
+		$tour_name = strtolower(str_replace(' ', '-', $tour_name));
 
 		$table_name = $wpdb->prefix . 'user_tour_guide';
 

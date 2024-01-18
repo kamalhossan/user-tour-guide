@@ -52,6 +52,9 @@ class User_Tour_Guide_Public {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
+		//register shortcode
+		add_shortcode( 'utg-user-tour-guide', array( $this, 'utg_user_tour_guide_callback' ) );
+
 	}
 
 	/**
@@ -73,7 +76,9 @@ class User_Tour_Guide_Public {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/user-tour-guide-public.css', array(), $this->version, 'all' );
+		wp_enqueue_style( 'user-tour-guide-style', 'https://unpkg.com/@sjmc11/tourguidejs/dist/css/tour.min.css', array(), $this->version, 'all' );
+
+		// wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/user-tour-guide-public.css', array(), $this->version, 'all' );
 
 	}
 
@@ -96,8 +101,37 @@ class User_Tour_Guide_Public {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/user-tour-guide-public.js', array( 'jquery' ), $this->version, false );
+		// Enqueue your script here
+		// wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/user-tour-guide-public.js', array( 'jquery' ), $this->version, false );
 
+	}
+
+	public function utg_user_tour_guide_callback(){
+		ob_start();
+		echo 'utg shortcode <br>';
+		echo  'print talamun change';
+
+		wp_enqueue_script( 'intro-script', 'https://unpkg.com/@sjmc11/tourguidejs/dist/tour.js', array(), $this->version, false );
+		wp_enqueue_script( 'user-tour-public', plugin_dir_url( __FILE__ ) . 'js/user-tour-guide-public.js', array( 'jquery', 'intro-script' ), $this->version, false );
+
+		wp_localize_script( 'user-tour-public', 'utg_public_object', array(
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'nonce' => wp_create_nonce( 'utg_public_nonce' ),
+			)
+		);
+		return ob_get_clean();
+	}
+
+	public function utg_get_user_tour_data_from_db(){
+		global $wpdb;
+
+		$table_name = $wpdb->prefix . 'user_tour_guide';
+		$results = $wpdb->get_results("SELECT * FROM $table_name", ARRAY_A);
+
+		header('Content-Type: application/json');
+		echo $steps = wp_json_encode($results);
+
+		die();
 	}
 
 }
