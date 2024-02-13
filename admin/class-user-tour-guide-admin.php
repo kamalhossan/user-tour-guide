@@ -32,6 +32,15 @@ class User_Tour_Guide_Admin {
 	private $plugin_name;
 
 	/**
+	 * The name of the DB of this plugin.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 * @var      string    $plugin_name    The ID of this plugin.
+	 */
+	private $user_tour_guide_db_name;
+
+	/**
 	 * The version of this plugin.
 	 *
 	 * @since    1.0.0
@@ -47,11 +56,11 @@ class User_Tour_Guide_Admin {
 	 * @param      string    $plugin_name       The name of this plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
+	public function __construct( $plugin_name, $version, $db_name ) {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-
+		$this->user_tour_guide_db_name = $db_name;
 	}
 
 	/**
@@ -218,7 +227,7 @@ class User_Tour_Guide_Admin {
 
 		global $wpdb;
 
-		$table_name = $wpdb->prefix . 'user_tour_guide';
+		$table_name = $wpdb->prefix . $this-> user_tour_guide_db_name;
 		$results = $wpdb->get_results("SELECT * FROM $table_name", ARRAY_A);
 
 		header('Content-Type: application/json');
@@ -243,16 +252,76 @@ class User_Tour_Guide_Admin {
 
 		global $wpdb;
 
-	
 		$step_title = sanitize_text_field($_POST['stepTitle']);
 		$step_content = sanitize_text_field($_POST['stepContent']);
 		$step_target = sanitize_text_field($_POST['stepTarget']);
 		$step_order =sanitize_text_field($_POST['stepOrder']);
 
+		$table_name = $wpdb->prefix . $this->user_tour_guide_db_name;
+
+		if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
+
+			$charset_collate = $wpdb->get_charset_collate();
+	
+			$sql = "CREATE TABLE $table_name (
+				id MEDIUMINT(9) NOT NULL AUTO_INCREMENT,
+				`title` VARCHAR(100) NULL,
+				`content` VARCHAR(500) NULL,
+				`target` VARCHAR(100) NULL,
+				`order` VARCHAR(50) NULL,
+				`group` VARCHAR(50) NULL,
+				PRIMARY KEY (id)
+			) $charset_collate;";
+	
+			require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+
+			$results = dbDelta($sql);
+
+			if($results !== false){
+					$this -> run_add_step_to_db($step_title, $step_content, $step_target, $step_order);
+			}
+		} else {
+			$this -> run_add_step_to_db($step_title, $step_content, $step_target, $step_order);
+		}
+
+		echo true;
+
+		die();
+	}
+
+
+	public function utg_edit_steps_to_db(){
+
+		global $wpdb;
+
+		$db_id = sanitize_text_field($_POST['id']);
+		$step_title = sanitize_text_field($_POST['stepTitle']);
+		$step_content = sanitize_text_field($_POST['stepContent']);
+		$step_target = sanitize_text_field($_POST['stepTarget']);
+		$step_order =sanitize_text_field($_POST['stepOrder']);
+
+		$table_name = $wpdb->prefix . $this->user_tour_guide_db_name;
+
+		$wpdb->query(
+			$wpdb->prepare(
+			"UPDATE $table_name SET `title` = %s, `content` = %s,`target` = %s , `order` = %s WHERE `id` = %s",
+			$step_title, $step_content , $step_target, $step_order , $db_id)
+		);
+
+		echo 'updated';
+
+		die();
+		
+	}
+
+	public function run_add_step_to_db($step_title = '', $step_content = '', $step_target = '', $step_order = ''){
+
+		global $wpdb;
+
 		$tour_name = 'User Tour Guide';
 		$tour_name = strtolower(str_replace(' ', '-', $tour_name));
 
-		$table_name = $wpdb->prefix . 'user_tour_guide';
+		$table_name = $wpdb->prefix . $this->user_tour_guide_db_name;
 
 		// right wpdb query to insert data into table
 		$wpdb->query(
@@ -263,11 +332,6 @@ class User_Tour_Guide_Admin {
 			array($step_title, $step_content , $step_target, $step_order , $tour_name)
 			)
 		);
-
-		// header('Content-Type: application/json');
-		echo true;
-
-		die();
 	}
 
 }

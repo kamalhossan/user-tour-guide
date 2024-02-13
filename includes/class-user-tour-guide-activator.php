@@ -34,7 +34,7 @@ class User_Tour_Guide_Activator {
 
 		global $wpdb;
 
-		$table_name = $wpdb->prefix . 'user_tour_guide'; // Replace 'your_table_name' with the desired table name
+		$table_name = $wpdb->prefix . 'utg_user_tour_guide'; // Replace 'your_table_name' with the desired table name
 	
 		// Check if the table already exists
 		if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
@@ -44,11 +44,11 @@ class User_Tour_Guide_Activator {
 	
 			$sql = "CREATE TABLE $table_name (
 				id MEDIUMINT(9) NOT NULL AUTO_INCREMENT,
-				step_title VARCHAR(100) NULL,
-				step_content VARCHAR(500) NULL,
-				target_element VARCHAR(100) NULL,
-				steps_order VARCHAR(50) NULL,
-				group_name VARCHAR(50) NULL,
+				`title` VARCHAR(100) NULL,
+				`content` VARCHAR(500) NULL,
+				`target` VARCHAR(100) NULL,
+				`order` VARCHAR(50) NULL,
+				`group` VARCHAR(50) NULL,
 				PRIMARY KEY (id)
 			) $charset_collate;";
 	

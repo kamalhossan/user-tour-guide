@@ -80,10 +80,3 @@ function run_user_tour_guide() {
 
 }
 run_user_tour_guide();
-
-// function utg_user_tour_guide_callback(){
-// 	ob_start();
-// 	echo 'utg shortcode <br>';
-// 	echo  'print talamun';
-// 	return ob_get_clean();
-// }

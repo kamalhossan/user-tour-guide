@@ -1,7 +1,7 @@
 <?php
 
 global $wpdb;
-$table_name = $wpdb->prefix . 'user_tour_guide';
+$table_name = $wpdb->prefix . 'utg_user_tour_guide';
 $results = $wpdb->get_results("SELECT * FROM $table_name where `group` LIKE 'User-Tour-Guide'");
 
 $orders = [];
@@ -53,7 +53,7 @@ $page_name = '';
                     <div class="col">
                         <div class="mb-3">
                             <label for="step_content" class="form-label">Step Content</label>
-                            <textarea class="form-control" id="step_content" rows="4" required></textarea>
+                            <textarea class="form-control" id="step_content" rows="4" placeholder="Add instruction for this step" required></textarea>
                         </div>
                     </div>
                 </div>                
@@ -101,17 +101,22 @@ $page_name = '';
 
                 <?php
                 
-                    foreach($results as $result){ ?>
+                    foreach($results as $result){ 
+                        $id = $result -> id;
+                        $order = $result -> order;
+                        $title = $result -> title;
+                        $content = $result -> content;
+                        $target = $result -> target;
+                        ?>
                     <tr>
-                        <td><?php echo $result -> order;?></td>
-                        <td contenteditable ="true"><?php echo $result -> title;?></td>
-                        <td><?php echo $result -> content;?></td>
-                        <td><?php echo $result -> target;?></td>
+                        <td><?php echo $order;?></td>
+                        <td><?php echo $title;?></td>
+                        <td><?php echo $content;?></td>
+                        <td><?php echo $target;?></td>
                         <td class="edit_step">
                             <div class="d-flex justify-content-center gap-3">
-                                <button data-bs-toggle="modal" data-bs-target="<?php echo '#staff-modal-'?>" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Step" id="<?php echo 'edit-';?>"><img src="<?php echo plugin_dir_url(__DIR__) . 'img/edit.svg'?>" alt="Edit"></button>
-                                <button data-bs-toggle="modal" data-bs-target="<?php echo '#remove-staff-' ?>" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove Step"><img src="<?php echo plugin_dir_url(__DIR__) . 'img/remove.svg' ?>" alt="Remove"></button>
-
+                                <button data-bs-toggle="modal" data-bs-target="<?php echo '#edit-modal-' . $id;?>" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Step" id="<?php echo 'edit-';?>"><img src="<?php echo plugin_dir_url(__DIR__) . 'img/edit.svg'?>" alt="Edit"></button>
+                                <button data-bs-toggle="modal" data-bs-target="<?php echo '#remove-staff-'. $id; ?>" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove Step"><img src="<?php echo plugin_dir_url(__DIR__) . 'img/remove.svg' ?>" alt="Remove"></button>
                             </div>
                         </td>
                     </tr>
@@ -125,13 +130,85 @@ $page_name = '';
     </div>
 </div>
 
-<?php
-
-echo plugin_dir_path( __FILE__ ) . '../';
-?>
 
 <!-- Modal Body -->
+<!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
+<?php
 
+foreach($results as $result){ 
+    $id = $result -> id;
+    $order = $result -> order;
+    $title = $result -> title;
+    $content = $result -> content;
+    $target = $result -> target;
+    ?>
+    <div
+    class="modal fade" id="<?php echo 'edit-modal-' . $id;?>" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitleId">
+                        <?= $title;?>
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    ></button>
+                </div>
+                
+                <form id="<?=$id;?>" class="needs-validation edit_step" action="">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label for="tour_name" class="form-label">Tour Name</label>
+                                    <input type="text" class="form-control" id="<?= 'tour_name_'. $id;?>" placeholder="User Tour Guide" disabled>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label for="step_title" class="form-label">Step Title</label>
+                                <input type="text" class="form-control" id="<?= 'step_title_'. $id;?>" placeholder="Welcome aboard👋" value="<?= $title;?>" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label for="step_order" class="form-label">Order</label>
+                                    <input type="number" class="form-control" id="<?= 'step_order_'. $id;?>" placeholder="1" value="<?php echo $max_order + 1;?>" min="<?php echo $max_order + 1;?>" required>
+                                </div> 
+                                <div class="mb-3">
+                                    <label for="step_target" class="form-label">Target Element</label>
+                                    <input type="text" class="form-control" id="<?= 'step_target_'. $id;?>" placeholder="HTMLElement | Element | Class | ID" value="<?= $target?>" required>
+                                    <div class="valid-feedback">
+                                    Looks good!
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label for="step_content" class="form-label">Step Content</label>
+                                    <textarea class="form-control" id="<?= 'step_content_'. $id;?>"  rows="4" placeholder="Add instruction for this step" required><?= $content;?></textarea>
+                                </div>
+                            </div>
+                        </div>                
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal"
+                        >
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary">Update Step</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+<?php }
+
+?>
 <?php
 
 // global $wpdb;

@@ -105,8 +105,6 @@
 			// prevent defualt behaviour
 			// e.preventDefault();
 
-			console.log('form submitted');
-
 			const stepTitle = $('#step_title').val();
 			const stepContent = $('#step_content').val();
 			const stepTarget = $('#step_target').val();
@@ -124,11 +122,47 @@
 					stepOrder: stepOrder,
 				},
 				success: function(response){
-					window.location.reload();
+					console.log(response);
+					// window.location.reload();
 				},
 				error: function(error){
 					console.log(error);
 				}
+			})
+		})
+
+		$('.edit_step').each(function(){
+			$(this).submit(function(e){
+				e.preventDefault();
+				const id = $(this).attr('id');
+				const editTitle = $('#step_title_' + id).val();
+				const editContent = $('#step_content_' + id).val();
+				const editTarget = $('#step_target_' + id).val();
+				const editOrder = $('#step_order_' + id).val();
+
+				console.log(id, editTitle, editContent, editTarget, editOrder);
+
+				$.ajax({
+					type: 'POST',
+					url: utg_admin_object.ajax_url,
+					data: {
+						action: 'utg_edit_steps_to_db',
+						// nonce: utg_admin_object.nonce,
+						id: id,
+						stepTitle: editTitle,
+						stepContent: editContent,
+						stepTarget: editTarget,
+						stepOrder: editOrder,
+					},
+					success: function(response){
+						console.log(response);
+						window.location.reload();
+					},
+					error: function(error){
+						console.log(error);
+					}
+				})
+				
 			})
 		})
 

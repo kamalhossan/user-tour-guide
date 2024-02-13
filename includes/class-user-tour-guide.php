@@ -49,6 +49,15 @@ class User_Tour_Guide {
 	protected $user_tour_guide;
 
 	/**
+	 * The unique identifier of this plugin.
+	 *
+	 * @since    1.0.0
+	 * @access   protected
+	 * @var      string    $user_tour_guide    The string used to uniquely identify this plugin.
+	 */
+	protected $user_tour_guide_db_name;
+
+	/**
 	 * The current version of the plugin.
 	 *
 	 * @since    1.0.0
@@ -73,6 +82,7 @@ class User_Tour_Guide {
 			$this->version = '1.0.0';
 		}
 		$this->user_tour_guide = 'user-tour-guide';
+		$this->user_tour_guide_db_name = 'utg_user_tour_guide';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -152,7 +162,7 @@ class User_Tour_Guide {
 	 */
 	private function define_admin_hooks() {
 
-		$plugin_admin = new User_Tour_Guide_Admin( $this->get_user_tour_guide(), $this->get_version() );
+		$plugin_admin = new User_Tour_Guide_Admin( $this->get_user_tour_guide(), $this->get_version(), $this->get_db_name() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
@@ -165,6 +175,8 @@ class User_Tour_Guide {
 		$this->loader->add_action( 'wp_ajax_nopriv_utg_get_tour_data_from_db', $plugin_admin, 'utg_get_tour_data_from_db' );
 		$this->loader->add_action( 'wp_ajax_utg_add_steps_to_db', $plugin_admin, 'utg_add_steps_to_db' );
 		$this->loader->add_action( 'wp_ajax_nopriv_utg_add_steps_to_db', $plugin_admin, 'utg_add_steps_to_db' );
+		$this->loader->add_action( 'wp_ajax_utg_edit_steps_to_db', $plugin_admin, 'utg_edit_steps_to_db' );
+		$this->loader->add_action( 'wp_ajax_nopriv_utg_edit_steps_to_db', $plugin_admin, 'utg_edit_steps_to_db' );
 
 	}
 
@@ -226,6 +238,10 @@ class User_Tour_Guide {
 	 */
 	public function get_version() {
 		return $this->version;
+	}
+
+	public function get_db_name() {
+		return $this-> user_tour_guide_db_name;
 	}
 
 }
