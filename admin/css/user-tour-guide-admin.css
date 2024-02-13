@@ -5,3 +5,21 @@
  .tg-dialog.animate-position {
     z-index: 9999999 !important;
  }
+ td.edit_step button {
+   border: 0;
+   padding: 5px 6px;
+}
+th.title {
+   min-width: 160px;
+}
+th.content {
+   width: 60%;
+}
+
+th.target {
+   width: 10%;
+}
+
+th.edit {
+   width: 120px;
+}

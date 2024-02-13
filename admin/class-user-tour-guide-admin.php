@@ -238,6 +238,8 @@ class User_Tour_Guide_Admin {
 
 	public function utg_add_steps_to_db(){
 
+		check_ajax_referer( 'utg_admin_nonce', 'nonce' );
+
 		/**
 		 * This function is provided for demonstration purposes only.
 		 *
@@ -292,6 +294,8 @@ class User_Tour_Guide_Admin {
 
 	public function utg_edit_steps_to_db(){
 
+		check_ajax_referer( 'utg_admin_nonce', 'nonce' );
+
 		global $wpdb;
 
 		$db_id = sanitize_text_field($_POST['id']);
@@ -314,6 +318,25 @@ class User_Tour_Guide_Admin {
 		
 	}
 
+	public function utg_remove_steps_from_db(){
+
+		check_ajax_referer( 'utg_admin_nonce', 'nonce' );
+
+		global $wpdb;
+
+		$db_id = sanitize_text_field($_POST['id']);
+
+		$table_name = $wpdb->prefix . $this->user_tour_guide_db_name;
+
+		$wpdb->query($wpdb->prepare("DELETE FROM $table_name WHERE `id` = %s", $db_id));
+
+		echo 'deleted' . $db_id;
+
+		die();
+		
+	}
+
+	// this function will add steps data into the database
 	public function run_add_step_to_db($step_title = '', $step_content = '', $step_target = '', $step_order = ''){
 
 		global $wpdb;

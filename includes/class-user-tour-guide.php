@@ -177,6 +177,8 @@ class User_Tour_Guide {
 		$this->loader->add_action( 'wp_ajax_nopriv_utg_add_steps_to_db', $plugin_admin, 'utg_add_steps_to_db' );
 		$this->loader->add_action( 'wp_ajax_utg_edit_steps_to_db', $plugin_admin, 'utg_edit_steps_to_db' );
 		$this->loader->add_action( 'wp_ajax_nopriv_utg_edit_steps_to_db', $plugin_admin, 'utg_edit_steps_to_db' );
+		$this->loader->add_action( 'wp_ajax_utg_remove_steps_from_db', $plugin_admin, 'utg_remove_steps_from_db' );
+		$this->loader->add_action( 'wp_ajax_nopriv_utg_remove_steps_from_db', $plugin_admin, 'utg_remove_steps_from_db' );
 
 	}
 
@@ -189,7 +191,7 @@ class User_Tour_Guide {
 	 */
 	private function define_public_hooks() {
 
-		$plugin_public = new User_Tour_Guide_Public( $this->get_user_tour_guide(), $this->get_version() );
+		$plugin_public = new User_Tour_Guide_Public( $this->get_user_tour_guide(), $this->get_version(), $this->get_db_name() );
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );

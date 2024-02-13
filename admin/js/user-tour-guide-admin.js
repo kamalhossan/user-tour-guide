@@ -147,7 +147,7 @@
 					url: utg_admin_object.ajax_url,
 					data: {
 						action: 'utg_edit_steps_to_db',
-						// nonce: utg_admin_object.nonce,
+						nonce: utg_admin_object.nonce,
 						id: id,
 						stepTitle: editTitle,
 						stepContent: editContent,
@@ -163,6 +163,34 @@
 					}
 				})
 				
+			})
+		})
+
+		$('.delete').each(function(){
+			$(this).click(function(e){
+				const deleteId = $(this).attr('id');
+				const confirmations = window.confirm('Are you sure?');
+				if(confirmations){
+					console.log(deleteId);
+					$.ajax({
+						type: 'POST',
+						url: utg_admin_object.ajax_url,
+						data: {
+							action: 'utg_remove_steps_from_db',
+							nonce: utg_admin_object.nonce,
+							id: deleteId,
+						},
+						success: function(response){
+							console.log(response);
+							window.location.reload();
+						},
+						error: function(error){
+							console.log(error);
+						}
+					})
+				} else {
+					console.log('skip')
+				}
 			})
 		})
 

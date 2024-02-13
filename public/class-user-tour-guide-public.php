@@ -31,6 +31,15 @@ class User_Tour_Guide_Public {
 	 */
 	private $plugin_name;
 
+		/**
+	 * The name of the DB of this plugin.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 * @var      string    $plugin_name    The ID of this plugin.
+	 */
+	private $user_tour_guide_db_name;
+
 	/**
 	 * The version of this plugin.
 	 *
@@ -47,10 +56,12 @@ class User_Tour_Guide_Public {
 	 * @param      string    $plugin_name       The name of the plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
+	public function __construct( $plugin_name, $version, $db_name ) {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
+		$this->version = $version;
+		$this->user_tour_guide_db_name = $db_name;
 
 		//register shortcode
 		add_shortcode( 'utg-user-tour-guide', array( $this, 'utg_user_tour_guide_callback' ) );
@@ -108,9 +119,7 @@ class User_Tour_Guide_Public {
 
 	public function utg_user_tour_guide_callback(){
 		ob_start();
-		echo 'utg shortcode <br>';
-		echo  'print talamun change';
-
+		
 		wp_enqueue_script( 'intro-script', 'https://unpkg.com/@sjmc11/tourguidejs/dist/tour.js', array(), $this->version, false );
 		wp_enqueue_script( 'user-tour-public', plugin_dir_url( __FILE__ ) . 'js/user-tour-guide-public.js', array( 'jquery', 'intro-script' ), $this->version, false );
 
@@ -125,7 +134,7 @@ class User_Tour_Guide_Public {
 	public function utg_get_user_tour_data_from_db(){
 		global $wpdb;
 
-		$table_name = $wpdb->prefix . 'user_tour_guide';
+		$table_name = $wpdb->prefix . $this -> user_tour_guide_db_name;
 		$results = $wpdb->get_results("SELECT * FROM $table_name", ARRAY_A);
 
 		header('Content-Type: application/json');

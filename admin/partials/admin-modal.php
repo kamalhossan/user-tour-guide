@@ -2,7 +2,7 @@
 
 global $wpdb;
 $table_name = $wpdb->prefix . 'utg_user_tour_guide';
-$results = $wpdb->get_results("SELECT * FROM $table_name where `group` LIKE 'User-Tour-Guide'");
+$results = $wpdb->get_results("SELECT * FROM $table_name where `group` LIKE 'User-Tour-Guide' ORDER BY `order`");
 
 $orders = [];
 
@@ -81,51 +81,59 @@ $page_name = '';
     </div>
 </div>
 <div class="row">
-<div class="col">
-        <div class="border border-1 rounded-2 shadow-sm p-3 mt-3 your-steps">
-            <div class="d-flex align-items-center justify-content-lg-between">
-                <h4>Your Response</h4>
-            </div>
-            <div class="your_tour mt-3">
-                <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Order</th>
-                        <th scope="col">Title</th>
-                        <th scope="col">Content</th>
-                        <th scope="col">Target</th>
-                        <th scope="col">Edit</th>
-                    </tr>
-                </thead>
-                <tbody>
+        <div class="col">
+            <div class="border border-1 rounded-2 shadow-sm p-3 mt-3 your-steps">
+            <?php
+            if($results || count($results) > 0){?>
+                <div class="d-flex align-items-center justify-content-lg-between">
+                    <h4>Your Response</h4>
+                </div>
+                <div class="your_tour mt-3">
+                    <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="order">Order</th>
+                            <th scope="col" class="title">Title</th>
+                            <th scope="col" class="content">Content</th>
+                            <th scope="col" class="target">Target</th>
+                            <th scope="col" class="edit">Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-                <?php
-                
-                    foreach($results as $result){ 
-                        $id = $result -> id;
-                        $order = $result -> order;
-                        $title = $result -> title;
-                        $content = $result -> content;
-                        $target = $result -> target;
-                        ?>
-                    <tr>
-                        <td><?php echo $order;?></td>
-                        <td><?php echo $title;?></td>
-                        <td><?php echo $content;?></td>
-                        <td><?php echo $target;?></td>
-                        <td class="edit_step">
-                            <div class="d-flex justify-content-center gap-3">
-                                <button data-bs-toggle="modal" data-bs-target="<?php echo '#edit-modal-' . $id;?>" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Step" id="<?php echo 'edit-';?>"><img src="<?php echo plugin_dir_url(__DIR__) . 'img/edit.svg'?>" alt="Edit"></button>
-                                <button data-bs-toggle="modal" data-bs-target="<?php echo '#remove-staff-'. $id; ?>" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove Step"><img src="<?php echo plugin_dir_url(__DIR__) . 'img/remove.svg' ?>" alt="Remove"></button>
-                            </div>
-                        </td>
-                    </tr>
                     <?php
-                    }
-                ?>
-                </tbody>
+                        // arsort($results);
+                        foreach($results as $result){ 
+                            $id = $result -> id;
+                            $order = $result -> order;
+                            $title = $result -> title;
+                            $content = $result -> content;
+                            $target = $result -> target;
+                            ?>
+                        <tr>
+                            <td><?php echo $order;?></td>
+                            <td><?php echo $title;?></td>
+                            <td><?php echo $content;?></td>
+                            <td><?php echo $target;?></td>
+                            <td class="edit_step">
+                                <div class="d-flex justify-content-center gap-3">
+                                    <button data-bs-toggle="modal" data-bs-target="<?php echo '#edit-modal-' . $id;?>" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Step" id="<?php echo 'edit-';?>"><img src="<?php echo plugin_dir_url(__DIR__) . 'img/edit.svg'?>" alt="Edit"></button>
+                                    <button id="<?= $id; ?>" data-bs-toggle="tooltip" class="delete" data-bs-placement="top" title="Remove Step"><img src="<?php echo plugin_dir_url(__DIR__) . 'img/remove.svg' ?>" alt="Remove"></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <?php
+                        }
+                    ?>
+                    </tbody>
                 </table>
             </div>
+        <?php } else {
+            echo '<div class="d-flex align-items-center justify-content-lg-between">';
+            echo '<h4>No steps found</h4>';
+            echo '</div>';
+        }
+        ?>
         </div>
     </div>
 </div>
@@ -159,13 +167,13 @@ foreach($results as $result){
                         <div class="row">
                             <div class="col">
                                 <div class="mb-3">
-                                    <label for="tour_name" class="form-label">Tour Name</label>
+                                    <label for="<?= 'tour_name_'. $id;?>" class="form-label">Tour Name</label>
                                     <input type="text" class="form-control" id="<?= 'tour_name_'. $id;?>" placeholder="User Tour Guide" disabled>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="mb-3">
-                                    <label for="step_title" class="form-label">Step Title</label>
+                                    <label for="<?= 'step_title_'. $id;?>" class="form-label">Step Title</label>
                                 <input type="text" class="form-control" id="<?= 'step_title_'. $id;?>" placeholder="Welcome aboard👋" value="<?= $title;?>" required>
                                 </div>
                             </div>
@@ -173,11 +181,11 @@ foreach($results as $result){
                         <div class="row">
                             <div class="col">
                                 <div class="mb-3">
-                                    <label for="step_order" class="form-label">Order</label>
-                                    <input type="number" class="form-control" id="<?= 'step_order_'. $id;?>" placeholder="1" value="<?php echo $max_order + 1;?>" min="<?php echo $max_order + 1;?>" required>
+                                    <label for="<?= 'step_order_'. $id;?>" class="form-label">Order</label>
+                                    <input type="number" class="form-control" id="<?= 'step_order_'. $id;?>" placeholder="1" value="<?= $order;?>" required>
                                 </div> 
                                 <div class="mb-3">
-                                    <label for="step_target" class="form-label">Target Element</label>
+                                    <label for="<?= 'step_target_'. $id;?>" class="form-label">Target Element</label>
                                     <input type="text" class="form-control" id="<?= 'step_target_'. $id;?>" placeholder="HTMLElement | Element | Class | ID" value="<?= $target?>" required>
                                     <div class="valid-feedback">
                                     Looks good!
@@ -186,7 +194,7 @@ foreach($results as $result){
                             </div>
                             <div class="col">
                                 <div class="mb-3">
-                                    <label for="step_content" class="form-label">Step Content</label>
+                                    <label for="<?= 'step_content_'. $id;?>" class="form-label">Step Content</label>
                                     <textarea class="form-control" id="<?= 'step_content_'. $id;?>"  rows="4" placeholder="Add instruction for this step" required><?= $content;?></textarea>
                                 </div>
                             </div>
