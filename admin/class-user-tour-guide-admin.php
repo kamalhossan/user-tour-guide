@@ -164,7 +164,7 @@ class User_Tour_Guide_Admin {
 		// endswitch;
 
 		// include admin modal
-		include_once plugin_dir_path( __FILE__ ) . 'partials/admin-modal.php';
+		include_once plugin_dir_path( __FILE__ ) . 'partials/user-tour-guide-admin-display.php';
 		
 		?>
 		
@@ -214,15 +214,7 @@ class User_Tour_Guide_Admin {
 	public function utg_get_tour_data_from_db(){
 
 		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Plugin_Name_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Plugin_Name_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
+		 * getting all the steps from db for showing this on fronted
 		 */
 
 		global $wpdb;
@@ -241,15 +233,7 @@ class User_Tour_Guide_Admin {
 		check_ajax_referer( 'utg_admin_nonce', 'nonce' );
 
 		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Plugin_Name_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Plugin_Name_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
+		 * adds steps will store the steps on the database
 		 */
 
 		global $wpdb;
@@ -355,6 +339,26 @@ class User_Tour_Guide_Admin {
 			array($step_title, $step_content , $step_target, $step_order , $tour_name)
 			)
 		);
+	}
+
+	public function utg_add_settings_link_to_plugin_list(array $links){
+		// Add a new settings link
+		$url = get_admin_url() . 'admin.php?page=user_tour_guide';
+		$settings_link = '<a href="' . esc_url( $url ) . '">' . __( 'Settings', 'user-tour-guide' ) . '</a>';
+		$links[]    = $settings_link;
+		$support 	= '<a href="https://kamalhossan.github.io/" target="_blank">' . __( 'support', 'user-tour-guide' ) . '</a>';
+		$links[]    = $support;
+		return $links;
+	}
+
+	public function utg_admin_tour_skip(){
+
+		check_ajax_referer( 'utg_admin_nonce', 'nonce' );
+
+		$user_id = get_current_user_id();
+		update_user_meta( $user_id, 'utg_admin_tour' , true);
+		echo true;
+		die();
 	}
 
 }

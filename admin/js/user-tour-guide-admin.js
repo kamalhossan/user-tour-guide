@@ -2,6 +2,10 @@
 	'use strict';
 
 	$(function() {
+
+
+
+
         // Your code here, within the DOM ready handler
 
 		// add all steps gor GGSA Product Range Page
@@ -194,7 +198,37 @@
 			})
 		})
 
+		
+		if($('.utg-admin-tour').hasClass('open')){
+			$('#tourStart').modal('show');
+		}
+
+		$('#start-tour').click(() => {
+			adminTour.start('utg-admin-tour');
+		})
+
+		$('#admin-skip').click(function(){
+			$.ajax({
+				type: 'POST',
+				url: utg_admin_object.ajax_url,
+				data:{
+					action: 'utg_admin_tour_skip',
+					nonce: utg_admin_object.nonce
+				},
+				success: function(response){
+					console.log('admin tour skipped');
+				},
+				error : function(error){
+
+				}
+			})
+		})
+
     });
+
+	// check body has class or not
+	
+
 
 	console.log('admin plugin load');
 

@@ -2,6 +2,10 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
+
+ :root{
+   --btn-primary-color : #FAA332;
+ }
  .tg-dialog.animate-position {
     z-index: 9999999 !important;
  }
@@ -22,4 +26,23 @@ th.target {
 
 th.edit {
    width: 120px;
+}
+img.limit-alert {
+   position: absolute;
+   top: -25px;
+   left: 50%;
+   transform: translate(-50%, 0px);
+}
+.btn-primary, .btn-primary:focus, .btn-primary:hover, .btn-primary:active {
+   background-color: var(--btn-primary-color) !important;
+   border: var(--btn-primary-color) !important;
+}
+.btn-secondary, .btn-secondary:focus, .btn-secondary:hover, .btn-secondary:active {
+   background-color: transparent !important;
+   border: 1px solid var(--btn-primary-color);
+   color: var(--btn-primary-color) !important;
+}
+td.edit_step button {
+   background: #92bcfb40;
+   color: #fff;
 }

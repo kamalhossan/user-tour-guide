@@ -88,7 +88,7 @@ class User_Tour_Guide {
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
-
+		
 	}
 
 	/**
@@ -170,6 +170,12 @@ class User_Tour_Guide {
 		//Register menu page
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'user_tour_guide_settings_page' );
 
+		// Filter hooks
+		$this->loader->add_filter(
+			'plugin_action_links_' . plugin_basename(USER_TOUR_GUIDE_PLUGIN_FILE), $plugin_admin, 
+			'utg_add_settings_link_to_plugin_list',
+		);
+
 		// Ajax Actions
 		$this->loader->add_action( 'wp_ajax_utg_get_tour_data_from_db', $plugin_admin, 'utg_get_tour_data_from_db' );
 		$this->loader->add_action( 'wp_ajax_nopriv_utg_get_tour_data_from_db', $plugin_admin, 'utg_get_tour_data_from_db' );
@@ -179,6 +185,8 @@ class User_Tour_Guide {
 		$this->loader->add_action( 'wp_ajax_nopriv_utg_edit_steps_to_db', $plugin_admin, 'utg_edit_steps_to_db' );
 		$this->loader->add_action( 'wp_ajax_utg_remove_steps_from_db', $plugin_admin, 'utg_remove_steps_from_db' );
 		$this->loader->add_action( 'wp_ajax_nopriv_utg_remove_steps_from_db', $plugin_admin, 'utg_remove_steps_from_db' );
+		$this->loader->add_action( 'wp_ajax_utg_admin_tour_skip', $plugin_admin, 'utg_admin_tour_skip' );
+		$this->loader->add_action( 'wp_ajax_nopriv_utg_admin_tour_skip', $plugin_admin, 'utg_admin_tour_skip' );
 
 	}
 
@@ -247,3 +255,4 @@ class User_Tour_Guide {
 	}
 
 }
+

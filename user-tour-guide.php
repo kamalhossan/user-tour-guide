@@ -30,6 +30,9 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+// define file path declare anywhere
+define( 'USER_TOUR_GUIDE_PLUGIN_FILE', __FILE__ );
+
 /**
  * Currently plugin version.
  * Start at version 1.0.0 and use SemVer - https://semver.org
