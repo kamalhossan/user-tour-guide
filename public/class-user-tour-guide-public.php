@@ -87,7 +87,7 @@ class User_Tour_Guide_Public {
 		 * class.
 		 */
 
-		wp_enqueue_style( 'user-tour-guide-style', 'https://unpkg.com/@sjmc11/tourguidejs/dist/css/tour.min.css', array(), $this->version, 'all' );
+		
 
 		// wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/user-tour-guide-public.css', array(), $this->version, 'all' );
 
@@ -119,13 +119,20 @@ class User_Tour_Guide_Public {
 
 	public function utg_user_tour_guide_callback(){
 		ob_start();
-		
-		wp_enqueue_script( 'intro-script', 'https://unpkg.com/@sjmc11/tourguidejs/dist/tour.js', array(), $this->version, false );
+
+		echo '<div class="utg-guide">';
+		echo '<button id="user-tour-guide" class="utg-tour-start">Start Tour</button>';
+		echo '</div>';
+
+		wp_enqueue_style( 'intro-style', plugin_dir_url(__FILE__) . 'css/tour.min.css', array(), $this->version, 'all' );
+		wp_enqueue_style( 'user-tour-guide-style', plugin_dir_url(__FILE__) . 'css/user-tour-guide-public.css', array(), $this->version, 'all' );
+		wp_enqueue_script( 'intro-script', plugin_dir_url(__FILE__) . 'js/tour.min.js', array(), $this->version, false );
 		wp_enqueue_script( 'user-tour-public', plugin_dir_url( __FILE__ ) . 'js/user-tour-guide-public.js', array( 'jquery', 'intro-script' ), $this->version, false );
 
 		wp_localize_script( 'user-tour-public', 'utg_public_object', array(
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
 			'nonce' => wp_create_nonce( 'utg_public_nonce' ),
+			'complete' => false,
 			)
 		);
 		return ob_get_clean();
