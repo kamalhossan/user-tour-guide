@@ -369,7 +369,7 @@ class User_Tour_Guide_Admin {
 
 	public function utg_remove_steps_from_db(){
 
-		// check_ajax_referer( 'utg_admin_nonce', 'nonce' );
+		check_ajax_referer( 'utg_admin_nonce', 'nonce' );
 
 		global $wpdb;
 
