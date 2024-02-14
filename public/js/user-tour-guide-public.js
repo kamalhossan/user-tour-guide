@@ -30,6 +30,7 @@
 	 */
 
 	$(function(){
+
 		
 		const publicTour = new tourguide.TourGuideClient({
 			showStepProgress: false,
@@ -47,12 +48,22 @@
 			success: function (response) {
 				// console.log(response);
 				publicTour.addSteps(response)
-				publicTour.start("user-tour-guide");
+				if(utg_public_object.complete){
+					publicTour.start("user-tour-guide");
+				}
 			},
 			error: function (error) {
 				console.log(error);
 			}
 		});
+
+		$('.utg-tour-start').each(function(){
+			const id = $(this).attr('id');
+			$(this).click(function(){
+				publicTour.start(id);
+			})			
+		})
+		
 	});
 
 })( jQuery );
