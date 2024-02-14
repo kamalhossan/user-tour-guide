@@ -63,6 +63,33 @@
 				publicTour.start(id);
 			})			
 		})
+
+		publicTour.onAfterExit(()=>{
+			// add shadow outside clikable
+			// $('.tour-backdrop').remove();
+			completeMeta();
+		})
+			
+		publicTour.onFinish(()=>{
+			completeMeta();
+		}) 
+
+		function completeMeta(){
+			$.ajax({
+				type: 'POST',
+				url: utg_public_object.ajax_url,
+				data: {
+					action: 'utg_change_user_meta',
+					nonce: utg_public_object.nonce,
+				},
+				success: function (response) {
+					console.log(response);
+				},
+				error: function (error) {
+					console.log(error);
+				}
+			});
+		}
 		
 	});
 

@@ -1,0 +1,7 @@
+/* settings page */
+.form-table th, .form-table td {
+    padding: 5px 0 !important;
+ }
+ .form-table  td.checkbox {
+    width: 25px;
+}

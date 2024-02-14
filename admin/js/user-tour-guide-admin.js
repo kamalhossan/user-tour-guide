@@ -41,7 +41,7 @@
 				group: 'utg-admin-tour',
 			},
 			{
-				ttitle: 'Target Your Element',
+				title: 'Target Your Element',
 				content: "Here you need to specify the HTMLElement | Element | Class or ID from the Doc to place this tour",
 				target: "#step_target",
 				order: 6,
@@ -250,7 +250,13 @@
 		
 		if($('.utg-admin-tour').hasClass('open')){
 			$('#tourStart').modal('show');
+
+			
+		} else {
+			console.log('no class')
 		}
+
+		
 
 		$('#start-tour').click(() => {
 			adminTour.start('utg-admin-tour');

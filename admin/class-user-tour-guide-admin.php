@@ -92,6 +92,9 @@ class User_Tour_Guide_Admin {
 			wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/user-tour-guide-admin.css', array(), $this->version, 'all' );
 			wp_enqueue_style( 'tour-css', plugin_dir_url(USER_TOUR_GUIDE_PLUGIN_FILE) . 'public/css/tour.min.css', array(), $this->version, 'all' );
 		}
+		if ($current_screen && $current_screen->id === 'user-tour-guide_page_user_tour_guide_settings') {
+			wp_enqueue_style( 'setting-css', plugin_dir_url( __FILE__ ) . 'css/user-tour-guide-setting.css', array(), $this->version, 'all' );
+		}
 
 	}
 
@@ -131,9 +134,9 @@ class User_Tour_Guide_Admin {
 	public function user_tour_guide_register_settings() {
 		// Register a setting for your plugin
 		register_setting( 'user_tour_guide_options', 'utg_tour_option' );
-		register_setting( 'user_tour_guide_options', 'show_tour_button', array(
-
-		) );
+		register_setting( 'user_tour_guide_options', 'show_begin_tour');
+		register_setting( 'user_tour_guide_options', 'start_immidiately');
+		register_setting( 'user_tour_guide_options', 'auto_start_for_new_user');
 		// register_setting( $option_group:string, $option_name:string, $args:array )
 	}
 
@@ -146,15 +149,28 @@ class User_Tour_Guide_Admin {
 				<?php do_settings_sections( 'user_tour_guide_options' ); ?>
 				<table class="form-table">
 					<tr valign="top">
-						<th scope="row">Enable User Tour Guide</th>
-						<td><input type="checkbox" name="utg_tour_option" value="1" <?php checked( get_option( 'utg_tour_option' ), 1 ); ?> /></td>
+						<td class="checkbox"><input type="checkbox" name="utg_tour_option" value="1" <?php checked( get_option( 'utg_tour_option' ), 1 ); ?> /></td>
+						<td scope="row">Disabled User Tour Guide</th>
 					</tr>
-				</table>
-				<table class="form-table">
 					<tr valign="top">
-						<th scope="row">Show Start Tour Button</th>
-						<td><input type="checkbox" name="show_tour_button" value="1" <?php checked( get_option( 'show_tour_button' ), 1 ); ?> /></td>
+						<td class="checkbox"><input type="checkbox" name="start_immidiately" value="1" <?php checked( get_option( 'start_immidiately' ), 1 ); ?> /></td>
+						<td scope="row">Start tour on every page loads for all user</td>
 					</tr>
+					<tr valign="top">
+						<?php if(get_option( 'start_immidiately')){
+							$disable_new_user_options = true;
+						} else {
+							$disable_new_user_options = false;
+						}
+						?>
+						<td class="checkbox"><input type="checkbox" name="auto_start_for_new_user" value="1" <?php echo ($disable_new_user_options) ? 'disabled' : checked( get_option( 'auto_start_for_new_user' ), 1 ); ?> /></td>
+						<td scope="row">Auto start tour if user is new</td>
+					</tr>
+					<tr valign="top">
+						<td class="checkbox"><input type="checkbox" name="show_begin_tour" value="1" <?php checked( get_option( 'show_begin_tour' ), 1 ); ?> /></td>
+						<td scope="row">Show Begin Tour Button</td>
+					</tr>
+
 				</table>
 				<?php submit_button(); ?>
 			</form>
@@ -168,6 +184,11 @@ class User_Tour_Guide_Admin {
 		return;
 	}
 
+	global $wpdb;
+
+	$table_name = $wpdb->prefix . $this-> user_tour_guide_db_name;
+	$groups = $wpdb->get_results("SELECT DISTINCT `group` FROM $table_name", ARRAY_A);
+
 	?>
 	<div class="wrap">
 		<div class="d-flex justify-content-between align-items-center">
@@ -179,11 +200,6 @@ class User_Tour_Guide_Admin {
 		</div>
 	
 		<?php
-
-		global $wpdb;
-
-		$table_name = $wpdb->prefix . $this-> user_tour_guide_db_name;
-		$groups = $wpdb->get_results("SELECT DISTINCT `group` FROM $table_name", ARRAY_A);
 
 		?>
 		<!-- Nav tabs -->
@@ -223,9 +239,13 @@ class User_Tour_Guide_Admin {
 		</div>
 		<?php
 
-		// include admin modal
-		include_once plugin_dir_path( __FILE__ ) . 'partials/user-tour-guide-admin-display.php';
+		if(empty($groups)){
+			// include blank from
+			include_once plugin_dir_path( __FILE__ ) . 'partials/user-tour-guide-admin-display.php';
+		}
+
 		include_once plugin_dir_path( __FILE__ ) . 'partials/new-tour.php';
+		include_once plugin_dir_path( __FILE__ ) . 'partials/admin-modal.php';
 		
 		?>
 		

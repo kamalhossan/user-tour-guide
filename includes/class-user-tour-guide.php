@@ -191,6 +191,7 @@ class User_Tour_Guide {
 		$this->loader->add_action( 'wp_ajax_nopriv_utg_remove_steps_from_db', $plugin_admin, 'utg_remove_steps_from_db' );
 		$this->loader->add_action( 'wp_ajax_utg_admin_tour_skip', $plugin_admin, 'utg_admin_tour_skip' );
 		$this->loader->add_action( 'wp_ajax_nopriv_utg_admin_tour_skip', $plugin_admin, 'utg_admin_tour_skip' );
+
 	}
 
 	/**
@@ -210,6 +211,8 @@ class User_Tour_Guide {
 		// Ajax Actions
 		$this->loader->add_action( 'wp_ajax_utg_get_user_tour_data_from_db', $plugin_public, 'utg_get_user_tour_data_from_db' );
 		$this->loader->add_action( 'wp_ajax_nopriv_utg_get_user_tour_data_from_db', $plugin_public, 'utg_get_user_tour_data_from_db' );
+		$this->loader->add_action( 'wp_ajax_utg_change_user_meta', $plugin_public, 'utg_change_user_meta' );
+		$this->loader->add_action( 'wp_ajax_nopriv_utg_change_user_meta', $plugin_public, 'utg_change_user_meta' );
 
 	}
 

@@ -126,11 +126,28 @@ class User_Tour_Guide_Public {
 
 		$tour_name = $atts['tour'];
 
+		if(get_option( 'utg_tour_option', true)){
+			return;
+		}
+
 		ob_start();
 
-		echo '<div class="utg-guide">';
-		echo '<button id="'. $tour_name .'" class="utg-tour-start">Start Tour</button>';
-		echo '</div>';
+		if(get_option( 'show_begin_tour', true)){
+			echo '<div class="utg-guide">';
+			echo '<button id="'. $tour_name .'" class="utg-tour-start">Begin Tour</button>';
+			echo '</div>';
+		}
+
+		if(get_option( 'auto_start_for_new_user', true )){
+			$user_status = get_user_meta( get_current_user_id(), 'complete_or_skip_tour', true);
+			if(!$user_status){
+				$complete = true;
+			}
+		}elseif(get_option( 'start_immidiately', true)){
+			$complete = true;
+		}else {
+			$complete = false;
+		}
 
 		wp_enqueue_style( 'intro-style', plugin_dir_url(__FILE__) . 'css/tour.min.css', array(), $this->version, 'all' );
 		wp_enqueue_style( 'user-tour-guide-style', plugin_dir_url(__FILE__) . 'css/user-tour-guide-public.css', array(), $this->version, 'all' );
@@ -140,13 +157,16 @@ class User_Tour_Guide_Public {
 		wp_localize_script( 'user-tour-public', 'utg_public_object', array(
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
 			'nonce' => wp_create_nonce( 'utg_public_nonce' ),
-			'complete' => false,
+			'complete' => $complete,
 			)
 		);
 		return ob_get_clean();
 	}
 
 	public function utg_get_user_tour_data_from_db(){
+
+		check_ajax_referer('utg_public_nonce', 'nonce');
+
 		global $wpdb;
 
 		$table_name = $wpdb->prefix . $this -> user_tour_guide_db_name;
@@ -154,6 +174,17 @@ class User_Tour_Guide_Public {
 
 		header('Content-Type: application/json');
 		echo $steps = wp_json_encode($results);
+
+		die();
+	}
+
+	public function utg_change_user_meta(){
+
+		check_ajax_referer('utg_public_nonce', 'nonce');
+
+		update_user_meta( get_current_user_id(), 'complete_or_skip_tour' , true);
+
+		echo true;
 
 		die();
 	}
