@@ -2,3 +2,13 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
+ .utg-guide {
+    position: fixed;
+    top: 50%;
+    left: -45px;
+    transform: rotate(-90deg);
+}
+
+.utg-tour-start{
+    background: #faa332;
+}
