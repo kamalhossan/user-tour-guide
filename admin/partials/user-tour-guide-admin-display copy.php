@@ -17,6 +17,7 @@
 
 <?php
 
+
 global $wpdb;
 $table_name = $wpdb->prefix . 'utg_user_tour_guide';
 $results = $wpdb->get_results("SELECT * FROM $table_name where `group` LIKE 'User-Tour-Guide' ORDER BY `order`");
@@ -35,7 +36,7 @@ if(empty($orders)){
 $page_name = '';
 ?>
 
-<!-- <div class="row">
+<div class="row">
     <div class="col-md-8">
         <div class="border border-1 rounded-2 shadow-sm p-3 mt-3 align-content-center items-center ">
             <form id="add_step" class="needs-validation" action="" method="POST">
@@ -96,7 +97,73 @@ $page_name = '';
             </div>
         </div>
     </div>
-</div> -->
+</div>
+<div class="row">
+        <div class="col">
+            <div class="border border-1 rounded-2 shadow-sm p-3 mt-3 your-steps">
+            <?php
+            if($results || count($results) > 0){?>
+                <div class="d-flex align-items-center justify-content-lg-between">
+                    <h4>Your Response</h4>
+                </div>
+                <div class="your_tour mt-3">
+                    <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="order">Order</th>
+                            <th scope="col" class="title">Title</th>
+                            <th scope="col" class="content">Content</th>
+                            <th scope="col" class="target">Target</th>
+                            <th scope="col" class="edit">Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    <?php
+                        // arsort($results);
+                        foreach($results as $result){ 
+                            $id = $result -> id;
+                            $order = $result -> order;
+                            $title = $result -> title;
+                            $content = $result -> content;
+                            $target = $result -> target;
+                            ?>
+                        <tr>
+                            <td><?php echo $order;?></td>
+                            <td><?php echo $title;?></td>
+                            <td><?php echo $content;?></td>
+                            <td><?php echo $target;?></td>
+                            <td class="edit_step">
+                                <div class="d-flex justify-content-center gap-3">
+                                    <button data-bs-toggle="modal" data-bs-target="<?php echo '#edit-modal-' . $id;?>" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Step" id="<?php echo 'edit-';?>"><img src="<?php echo plugin_dir_url(__DIR__) . 'img/edit.svg'?>" alt="Edit"></button>
+                                    <button id="<?= $id; ?>" data-bs-toggle="tooltip" class="delete" data-bs-placement="top" title="Remove Step"><img src="<?php echo plugin_dir_url(__DIR__) . 'img/remove.svg' ?>" alt="Remove"></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <?php
+                        }
+                    ?>
+                    </tbody>
+                </table>
+            </div>
+        <?php } else {
+            echo '<div class="d-flex align-items-center justify-content-lg-between">';
+            echo '<h4>No steps found</h4>';
+            echo '</div>';
+        }
+        ?>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal Body -->
+<!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
+<?php
+
+
+?>
+
 
 <?php
 $user_id = get_current_user_id();
@@ -134,12 +201,12 @@ if(!$check_meta){
 
 <?php
 
-// wp_enqueue_style( 'intro-style', plugin_dir_url(USER_TOUR_GUIDE_PLUGIN_FILE) . 'public/css/tour.min.css', false );
-// wp_enqueue_script( 'intro-js', plugin_dir_url(USER_TOUR_GUIDE_PLUGIN_FILE) . 'public/js/tour.min.js',[] ,'' ,false);
+wp_enqueue_style( 'intro-style', plugin_dir_url(USER_TOUR_GUIDE_PLUGIN_FILE) . 'public/css/tour.min.css', false );
+wp_enqueue_script( 'intro-js', plugin_dir_url(USER_TOUR_GUIDE_PLUGIN_FILE) . 'public/js/tour.min.js',[] ,'' ,false);
 
-// wp_localize_script( 'tour-js', 'tour_object',
-//     array(
-//         'ajax_url' => admin_url( 'admin-ajax.php' ),
-//         'page_name' => $page_name
-//     )
-// );
+wp_localize_script( 'tour-js', 'tour_object',
+    array(
+        'ajax_url' => admin_url( 'admin-ajax.php' ),
+        'page_name' => $page_name
+    )
+);

@@ -117,11 +117,19 @@ class User_Tour_Guide_Public {
 
 	}
 
-	public function utg_user_tour_guide_callback(){
+	public function utg_user_tour_guide_callback($atts){
+
+		$atts = shortcode_atts( array(
+			'tour' => 'user-tour-guide',
+		), $atts, 'utg-user-tour-guide' );
+
+
+		$tour_name = $atts['tour'];
+
 		ob_start();
 
 		echo '<div class="utg-guide">';
-		echo '<button id="user-tour-guide" class="utg-tour-start">Start Tour</button>';
+		echo '<button id="'. $tour_name .'" class="utg-tour-start">Start Tour</button>';
 		echo '</div>';
 
 		wp_enqueue_style( 'intro-style', plugin_dir_url(__FILE__) . 'css/tour.min.css', array(), $this->version, 'all' );

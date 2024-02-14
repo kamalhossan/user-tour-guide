@@ -3,17 +3,12 @@
 
 	$(function() {
 
-
-
-
-        // Your code here, within the DOM ready handler
-
-		// add all steps gor GGSA Product Range Page
+		// add all steps for tour
 		const utgAdminTourSteps = [
 			{
 				content: "This is the form where you can create user guide tour for your visitor",
 				title: "Create Your User Tour",
-				target: "#add_step",
+				target: ".add_step",
 				order: 1,
 				group: 'utg-admin-tour',
 			},
@@ -85,34 +80,87 @@
 
 		adminTour.addSteps(utgAdminTourSteps);
 
-		$.ajax({
-			type: 'GET',
-			url: utg_admin_object.ajax_url,
-			data: {
-				action: 'utg_get_tour_data_from_db',
-				nonce: utg_admin_object.nonce,
-			},
-			success: function (response) {
-				adminTour.addSteps(response)
-			},
-			error: function (error) {
-				console.log(error);
-			}
-		});
+
+		$('#bugs').click(function(){
+			$.ajax({
+				type: 'POST',
+				url: utg_admin_object.ajax_url,
+				data: {
+					action: 'utg_fix_bugs',
+					// nonce: utg_admin_object.nonce,
+				},
+				success: function (response) {
+					console.log(response)
+				},
+				error: function (error) {
+					console.log(error);
+				}	
+			})
+		})
+
+		// $.ajax({
+		// 	type: 'GET',
+		// 	url: utg_admin_object.ajax_url,
+		// 	data: {
+		// 		action: 'utg_get_tour_data_from_db',
+		// 		nonce: utg_admin_object.nonce,
+		// 	},
+		// 	success: function (response) {
+		// 		adminTour.addSteps(response)
+		// 	},
+		// 	error: function (error) {
+		// 		console.log(error);
+		// 	}
+		// });
 		
         // Example: Handle click on #utg_sample
         $('#utg_sample').click(() => {
 			adminTour.start('utg-admin-tour');
 		})
 
-		$('#add_step').submit((e) => {
-			// prevent defualt behaviour
-			// e.preventDefault();
+		$('.add_step').each(function(){
+			$(this).submit(function(e){
+				e.preventDefault();
 
-			const stepTitle = $('#step_title').val();
-			const stepContent = $('#step_content').val();
-			const stepTarget = $('#step_target').val();
-			const stepOrder = $('#step_order').val();
+				const stepTitle = $(this).find('#step_title').val();
+				const stepContent = $(this).find('#step_content').val();
+				const stepTarget = $(this).find('#step_target').val();
+				const stepOrder = $(this).find('#step_order').val();
+				const tourName = $(this).find('#tour_name').val();
+
+				$.ajax({
+					type: 'POST',
+					url: utg_admin_object.ajax_url,
+					data: {
+						action: 'utg_add_steps_to_db',
+						nonce: utg_admin_object.nonce,
+						stepTitle: stepTitle,
+						stepContent: stepContent,
+						stepTarget: stepTarget,
+						stepOrder: stepOrder,
+						tourName: tourName,
+					},
+					success: function(response){
+						console.log(response);
+						window.location.reload();
+					},
+					error: function(error){
+						console.log(error);
+					}
+				})
+			})
+		})
+
+
+		$('#add_new_tour').submit((e) => {
+			// prevent defualt behaviour
+			e.preventDefault();
+
+			const stepTitle = $('#new_step_title').val();
+			const stepContent = $('#new_step_content').val();
+			const stepTarget = $('#new_step_target').val();
+			const stepOrder = $('#new_step_order').val();
+			const tourName = $('#new_tour_name').val();
 
 			$.ajax({
 				type: 'POST',
@@ -124,10 +172,11 @@
 					stepContent: stepContent,
 					stepTarget: stepTarget,
 					stepOrder: stepOrder,
+					tourName: tourName,
 				},
 				success: function(response){
 					console.log(response);
-					// window.location.reload();
+					window.location.reload();
 				},
 				error: function(error){
 					console.log(error);
