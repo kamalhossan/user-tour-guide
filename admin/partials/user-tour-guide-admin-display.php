@@ -242,6 +242,7 @@ $check_meta = get_user_meta( $user_id , 'utg_admin_tour', true );
 if(!$check_meta){
     echo '<div class="utg-admin-tour open" role="alert">';
 }
+
 ?>
 
 <!-- Modal Body -->
@@ -270,8 +271,8 @@ if(!$check_meta){
 
 <?php
 
-wp_enqueue_style( 'intro-style', 'https://unpkg.com/@sjmc11/tourguidejs/dist/css/tour.min.css', false );
-wp_enqueue_script( 'intro-js', 'https://unpkg.com/@sjmc11/tourguidejs/dist/tour.js',[] ,'' ,false);
+wp_enqueue_style( 'intro-style', plugin_dir_url(USER_TOUR_GUIDE_PLUGIN_FILE) . 'public/css/tour.min.css', false );
+wp_enqueue_script( 'intro-js', plugin_dir_url(USER_TOUR_GUIDE_PLUGIN_FILE) . 'public/js/tour.min.js',[] ,'' ,false);
 
 wp_localize_script( 'tour-js', 'tour_object',
     array(
