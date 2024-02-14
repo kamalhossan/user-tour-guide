@@ -47,7 +47,12 @@
 			},
 			success: function (response) {
 				// console.log(response);
-				publicTour.addSteps(response)
+				if(response.length === 0){
+					$('.utg-tour-start').text('No tour found');
+					$('.utg-tour-start').attr('disabled', 'disabled');
+				} else {
+					publicTour.addSteps(response)
+				}
 				if(utg_public_object.complete){
 					publicTour.start("user-tour-guide");
 				}

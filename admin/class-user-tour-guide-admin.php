@@ -134,10 +134,16 @@ class User_Tour_Guide_Admin {
 	public function user_tour_guide_register_settings() {
 		// Register a setting for your plugin
 		register_setting( 'user_tour_guide_options', 'utg_tour_option' );
-		register_setting( 'user_tour_guide_options', 'show_begin_tour');
-		register_setting( 'user_tour_guide_options', 'start_immidiately');
+		register_setting( 'user_tour_guide_options', 'start_immidiately', array(
+			'type' => 'string',
+			'default' => '1',
+		));
 		register_setting( 'user_tour_guide_options', 'auto_start_for_new_user');
-		// register_setting( $option_group:string, $option_name:string, $args:array )
+		register_setting( 'user_tour_guide_options', 'show_begin_tour', array(
+			'type' => 'string', // Data type (string, boolean, integer, etc.)
+			'default' => '0', // Set your default value here
+			)
+		);
 	}
 
 	public function user_tour_guide_options_page() {
