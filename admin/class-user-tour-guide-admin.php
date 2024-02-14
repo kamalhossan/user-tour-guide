@@ -90,7 +90,7 @@ class User_Tour_Guide_Admin {
 			// Enqueue your style  here
 			wp_enqueue_style( 'bootstrap-style', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css', array(), $this->version, 'all' );
 			wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/user-tour-guide-admin.css', array(), $this->version, 'all' );
-			wp_enqueue_style( $this->plugin_name, plugin_dir_url(USER_TOUR_GUIDE_PLUGIN_FILE) . 'public/css/tour.min.css', array(), $this->version, 'all' );
+			wp_enqueue_style( 'tour-css', plugin_dir_url(USER_TOUR_GUIDE_PLUGIN_FILE) . 'public/css/tour.min.css', array(), $this->version, 'all' );
 		}
 
 	}
@@ -186,7 +186,6 @@ class User_Tour_Guide_Admin {
 		$groups = $wpdb->get_results("SELECT DISTINCT `group` FROM $table_name", ARRAY_A);
 
 		?>
-		<button id="bugs">Bugs</button>
 		<!-- Nav tabs -->
 		<ul class="nav nav-tabs" id="myTab" role="tablist">
 
@@ -223,40 +222,6 @@ class User_Tour_Guide_Admin {
 		?>
 		</div>
 		<?php
-
-		
-
-		// Get the active tab from the $_GET param
-		// $default_tab = 'create_tour';
-		// $active_tab  = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : $default_tab; // // phpcs:ignore csrf ok, sanitization ok. 
-		// ?>
-
-		<!-- <h2 class="nav-tab-wrapper">
-			<a href="?page=user_tour_guide&tab=create_tour"
-				class="nav-tab create-tour <?php // echo $active_tab == 'create_tour' ? 'nav-tab-active' : ''; ?>"><?php // esc_html_e( 'Create a Tour', 'user-tour-guide' ); ?></a>
-			<a href="?page=user_tour_guide&tab=tour_options"
-				class="nav-tab tour-options <?php // echo $active_tab == 'tour_options' ? 'nav-tab-active' : ''; ?>"><?php // esc_html_e( 'Tour Options', 'user-tour-guide' ); ?></a>
-			<a href="?page=user_tour_guide&tab=style"
-				class="nav-tab tour-style <?php // echo $active_tab == 'style' ? 'nav-tab-active' : ''; ?>"><?php // esc_html_e( 'Style', 'user-tour-guide' ); ?></a>
-			<a href="?page=user_tour_guide&tab=faq"
-				class="nav-tab tour-faq <?php // echo $active_tab == 'style' ? 'nav-tab-active' : ''; ?>"><?php // esc_html_e( 'FAQ', 'user-tour-guide' ); ?></a>
-		</h2> -->
-
-		<?php
-		// switch ( $active_tab ) :
-		// 	case 'create_tour':
-		// 		include_once plugin_dir_path( __FILE__ ) . 'partials/form-create.php';
-		// 		break;
-		// 	case 'tour_options':
-		// 		include_once plugin_dir_path( __FILE__ ) . 'partials/form-general.php';
-		// 		break;
-		// 	case 'style':
-		// 		include_once plugin_dir_path( __FILE__ ) . 'partials/form-color-picker.php';
-		// 		break;
-		// 	case 'faq':
-		// 		include_once plugin_dir_path( __FILE__ ) . 'partials/faq.php';
-		// 		break;
-		// endswitch;
 
 		// include admin modal
 		include_once plugin_dir_path( __FILE__ ) . 'partials/user-tour-guide-admin-display.php';
@@ -296,9 +261,7 @@ class User_Tour_Guide_Admin {
 			// Enqueue your script here
 			wp_enqueue_script( 'bootstrap-script', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js', array(), '5.3.2', false );
 
-			wp_enqueue_style( 'intro-style', plugin_dir_url(USER_TOUR_GUIDE_PLUGIN_FILE) . 'public/css/tour.min.css', array(), $this->version, false );
-
-			wp_enqueue_script( $this->plugin_name, plugin_dir_url(USER_TOUR_GUIDE_PLUGIN_FILE) . 'public/js/tour.min.js', array(), $this->version, false );
+			wp_enqueue_script( 'tour-ks', plugin_dir_url(USER_TOUR_GUIDE_PLUGIN_FILE) . 'public/js/tour.min.js', array(), $this->version, false );
 
 			wp_enqueue_script( 'admin', plugin_dir_url( __FILE__ ) . 'js/user-tour-guide-admin.js', array(), $this->version, false );
 
@@ -309,9 +272,6 @@ class User_Tour_Guide_Admin {
 			
 		}
 
-		
-
-		
 	}
 
 	public function utg_get_tour_data_from_db(){

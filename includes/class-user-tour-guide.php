@@ -191,13 +191,6 @@ class User_Tour_Guide {
 		$this->loader->add_action( 'wp_ajax_nopriv_utg_remove_steps_from_db', $plugin_admin, 'utg_remove_steps_from_db' );
 		$this->loader->add_action( 'wp_ajax_utg_admin_tour_skip', $plugin_admin, 'utg_admin_tour_skip' );
 		$this->loader->add_action( 'wp_ajax_nopriv_utg_admin_tour_skip', $plugin_admin, 'utg_admin_tour_skip' );
-
-
-		//fix bugs
-		$this->loader->add_action( 'wp_ajax_utg_fix_bugs', $plugin_admin, 'testing_bugs_function' );
-		$this->loader->add_action( 'wp_ajax_nopriv_utg_fix_bugs', $plugin_admin, 'testing_bugs_function' );
-
-
 	}
 
 	/**
