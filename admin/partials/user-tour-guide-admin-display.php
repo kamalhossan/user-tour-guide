@@ -18,8 +18,8 @@
 <?php
 
 global $wpdb;
-$table_name = $wpdb->prefix . 'utg_user_tour_guide';
-$results = $wpdb->get_results("SELECT * FROM $table_name where `group` LIKE 'User-Tour-Guide' ORDER BY `order`");
+
+$results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}utg_user_tour_guide where `group` LIKE 'User-Tour-Guide' ORDER BY `order`");
 
 $orders = [];
 
@@ -38,12 +38,12 @@ $page_name = '';
 <div class="row">
     <div class="col-md-8">
         <div class="border border-1 rounded-2 shadow-sm p-3 mt-3 align-content-center items-center ">
-            <form id="<?= 'user-tour-guide';?>" class="add_step needs-validation" action="" method="POST">
+            <form id="<?php echo 'user-tour-guide';?>" class="add_step needs-validation" action="" method="POST">
                 <div class="row">
                     <div class="col">
                         <div class="mb-3">
                             <label for="tour_name" class="form-label">Tour Name</label>
-                            <input type="text" class="form-control" id="tour_name" placeholder="User Tour Guide" value="<?= 'User Tour Guide';?>" disabled>
+                            <input type="text" class="form-control" id="tour_name" placeholder="User Tour Guide" value="<?php echo 'User Tour Guide';?>" disabled>
                         </div>
                     </div>
                     <div class="col">
@@ -129,8 +129,8 @@ $page_name = '';
                         <td><?php echo $target;?></td>
                         <td class="edit_step">
                             <div class="d-flex justify-content-center gap-3">
-                                <button data-bs-toggle="modal" data-bs-target="<?php echo '#edit-modal-' . $id;?>" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Step" id="<?php echo 'edit-';?>"><img src="<?php echo plugin_dir_url(__DIR__) . 'admin/img/edit.svg'?>" alt="Edit"></button>
-                                <button id="<?= $id; ?>" data-bs-toggle="tooltip" class="delete" data-bs-placement="top" title="Remove Step"><img src="<?php echo plugin_dir_url(__DIR__) . 'admin/img/remove.svg' ?>" alt="Remove"></button>
+                                <button data-bs-toggle="modal" data-bs-target="<?php echo '#edit-modal-' . $id;?>" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Step" id="<?php echo 'edit-';?>"><img src="<?php echo plugin_dir_url(__DIR__) . 'img/edit.svg'?>" alt="Edit"></button>
+                                <button id="<?php echo $id; ?>" data-bs-toggle="tooltip" class="delete" data-bs-placement="top" title="Remove Step"><img src="<?php echo plugin_dir_url(__DIR__) . 'img/remove.svg' ?>" alt="Remove"></button>
                             </div>
                         </td>
                     </tr>

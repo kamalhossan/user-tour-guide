@@ -1,4 +1,4 @@
-=== Plugin Name ===
+=== User Tour Guide ===
 Contributors: kamalhossan
 Donate link: http://example.com/
 Tags: introduction, walkthrough, onboarding, user onboarding, user guide, tour guide, intro js, tutorial, documentation, helper, guide, multiple tours
@@ -8,6 +8,9 @@ Tested up to: 3.4
 Stable tag: 4.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
+
+User Tour Guide
+===============
 
 A simple lightweated onboarding user tour guide plugin for WordPress. Create unlimited onboarding tour for unlimited pages.
 

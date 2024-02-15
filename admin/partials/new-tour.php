@@ -11,37 +11,37 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="modalTitleId">
-					<?= 'Create a new tour';?>
+					<?php echo 'Create a new tour';?>
 				</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
 				></button>
 			</div>
 			
-			<form id="<?= 'add_new_tour';?>" class="needs-validation edit_step" action="">
+			<form id="<?php echo 'add_new_tour';?>" class="needs-validation edit_step" action="">
 				<div class="modal-body">
 					<div class="row">
 						<div class="col">
 							<div class="mb-3">
-								<label for="<?= 'new_tour_name';?>" class="form-label">Tour Name</label>
-								<input type="text" class="form-control" id="<?= 'new_tour_name';?>" placeholder="Product Tour Guide">
+								<label for="<?php echo 'new_tour_name';?>" class="form-label">Tour Name</label>
+								<input type="text" class="form-control" id="<?php echo 'new_tour_name';?>" placeholder="Product Tour Guide">
 							</div>
 						</div>
 						<div class="col">
 							<div class="mb-3">
-								<label for="<?= 'new_step_title'. $id;?>" class="form-label">Step Title</label>
-							<input type="text" class="form-control" id="<?= 'new_step_title';?>" placeholder="Welcome aboard👋" required>
+								<label for="<?php echo 'new_step_title'. $id;?>" class="form-label">Step Title</label>
+							<input type="text" class="form-control" id="<?php echo 'new_step_title';?>" placeholder="Welcome aboard👋" required>
 							</div>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col">
 							<div class="mb-3">
-								<label for="<?= 'new_step_order';?>" class="form-label">Order</label>
-								<input type="number" class="form-control" id="<?= 'new_step_order';?>" placeholder="1" value="<?= '1';?>" required>
+								<label for="<?php echo 'new_step_order';?>" class="form-label">Order</label>
+								<input type="number" class="form-control" id="<?php echo 'new_step_order';?>" placeholder="1" value="<?php echo '1';?>" required>
 							</div> 
 							<div class="mb-3">
-								<label for="<?= 'new_step_target'?>" class="form-label">Target Element</label>
-								<input type="text" class="form-control" id="<?= 'new_step_target';?>" placeholder="HTMLElement | Element | Class | ID" required>
+								<label for="<?php echo 'new_step_target'?>" class="form-label">Target Element</label>
+								<input type="text" class="form-control" id="<?php echo 'new_step_target';?>" placeholder="HTMLElement | Element | Class | ID" required>
 								<div class="valid-feedback">
 								Looks good!
 								</div>
@@ -49,8 +49,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 						</div>
 						<div class="col">
 							<div class="mb-3">
-								<label for="<?= 'new_step_content';?>" class="form-label">Step Content</label>
-								<textarea class="form-control" id="<?= 'new_step_content';?>"  rows="4" placeholder="Add instruction for this step" required></textarea>
+								<label for="<?php echo 'new_step_content';?>" class="form-label">Step Content</label>
+								<textarea class="form-control" id="<?php echo 'new_step_content';?>"  rows="4" placeholder="Add instruction for this step" required></textarea>
 							</div>
 						</div>
 					</div>                

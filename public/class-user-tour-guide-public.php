@@ -170,7 +170,7 @@ class User_Tour_Guide_Public {
 		global $wpdb;
 
 		$table_name = $wpdb->prefix . $this -> user_tour_guide_db_name;
-		$results = $wpdb->get_results("SELECT * FROM $table_name", ARRAY_A);
+		$results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}utg_user_tour_guide", ARRAY_A);
 
 		header('Content-Type: application/json');
 		echo $steps = wp_json_encode($results);

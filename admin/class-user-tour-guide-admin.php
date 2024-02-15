@@ -191,10 +191,15 @@ class User_Tour_Guide_Admin {
 	}
 
 	global $wpdb;
+	$table_name = $wpdb->prefix . $this -> user_tour_guide_db_name;
 
-	$table_name = $wpdb->prefix . $this-> user_tour_guide_db_name;
-	$groups = $wpdb->get_results("SELECT DISTINCT `group` FROM $table_name", ARRAY_A);
-
+	// $groups = $wpdb->get_results(
+	// 	$wpdb->prepare(
+	// 		"SELECT DISTINCT `group` FROM {$wpdb->prefix}utg_user_tour_guide"),
+	// 	ARRAY_A
+	// );
+	$groups = $wpdb->get_results("SELECT DISTINCT `group` FROM {$wpdb->prefix}utg_user_tour_guide",ARRAY_A);
+	
 	?>
 	<div class="wrap">
 		<div class="d-flex justify-content-between align-items-center">
@@ -219,8 +224,8 @@ class User_Tour_Guide_Admin {
 				$counter++;
 				?>
 				<li class="nav-item" role="presentation">
-					<button class="nav-link <?= ($counter == 1) ? 'active': '';?>" id="<?= $group_slug . '-tab'?>" data-bs-toggle="tab" data-bs-target="<?= '#'. $group_slug;?>"
-						type="button" role="tab" aria-controls="home" aria-selected="true"><?= $group_name;?></button>
+					<button class="nav-link <?php echo ($counter == 1) ? 'active': '';?>" id="<?php echo $group_slug . '-tab'?>" data-bs-toggle="tab" data-bs-target="<?php echo '#'. $group_slug;?>"
+					type="button" role="tab" aria-controls="home" aria-selected="true"><?php echo $group_name;?></button>
 				</li>
 				<?php
 			}
@@ -236,7 +241,7 @@ class User_Tour_Guide_Admin {
 				$group_name = str_replace('-', ' ', $group_slug);
 				$div_counter++;
 				?>
-				<div class="tab-pane <?= ($div_counter == 1) ? 'active': '';?>" id="<?= $group_slug?>" role="tabpanel" aria-labelledby="<?= $group_slug . '-tab'?>">
+				<div class="tab-pane <?php echo ($div_counter == 1) ? 'active': '';?>" id="<?php echo $group_slug?>" role="tabpanel" aria-labelledby="<?php echo $group_slug . '-tab'?>">
 					<?php $this -> render_tour_guide_add_response_form($group_slug); ?>
 					<?php $this -> render_tour_guide_response_table($group_slug); ?>
 				</div>
@@ -309,7 +314,7 @@ class User_Tour_Guide_Admin {
 		global $wpdb;
 
 		$table_name = $wpdb->prefix . $this-> user_tour_guide_db_name;
-		$results = $wpdb->get_results("SELECT * FROM $table_name", ARRAY_A);
+		$results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}%s", $this -> user_tour_guide_db_name, ARRAY_A);
 
 		header('Content-Type: application/json');
 		echo $steps = wp_json_encode($results);
@@ -336,7 +341,7 @@ class User_Tour_Guide_Admin {
 
 		$table_name = $wpdb->prefix . $this->user_tour_guide_db_name;
 
-		if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
+		if ($wpdb->get_var("SHOW TABLES LIKE %s", $table_name) != $table_name) {
 
 			$charset_collate = $wpdb->get_charset_collate();
 	
@@ -383,7 +388,7 @@ class User_Tour_Guide_Admin {
 
 		$wpdb->query(
 			$wpdb->prepare(
-			"UPDATE $table_name SET `title` = %s, `content` = %s,`target` = %s , `order` = %s WHERE `id` = %s",
+			"UPDATE {$wpdb->prefix}utg_user_tour_guide SET `title` = %s, `content` = %s,`target` = %s , `order` = %s WHERE `id` = %s",
 			$step_title, $step_content , $step_target, $step_order , $db_id)
 		);
 
@@ -403,7 +408,7 @@ class User_Tour_Guide_Admin {
 
 		$table_name = $wpdb->prefix . $this->user_tour_guide_db_name;
 
-		$wpdb->query($wpdb->prepare("DELETE FROM $table_name WHERE `id` = %s", $db_id));
+		$wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->prefix}utg_user_tour_guide WHERE `id` = %s", $db_id));
 
 		echo 'deleted' . $db_id;
 
@@ -421,12 +426,17 @@ class User_Tour_Guide_Admin {
 		// right wpdb query to insert data into table
 		$wpdb->query(
 			$wpdb->prepare(
-			"INSERT INTO $table_name
-			( `title`, `content`,`target` , `order` , `group` )
-			VALUES ('%s' , %s , %s , %s , %s)",
-			array($step_title, $step_content , $step_target, $step_order , $tour_name)
+				"INSERT INTO {$wpdb->prefix}utg_user_tour_guide
+				(`title`, `content`, `target`, `order`, `group`)
+				VALUES (%s, %s, %s, %d, %s)",
+				$step_title,
+				$step_content,
+				$step_target,
+				$step_order,
+				$tour_name
 			)
 		);
+		
 	}
 
 	public function utg_add_settings_link_to_plugin_list(array $links){
@@ -455,12 +465,12 @@ class User_Tour_Guide_Admin {
 		<div class="row">
 			<div class="col-md-8">
 				<div class="border border-1 rounded-2 shadow-sm p-3 mt-3 align-content-center items-center ">
-					<form id="<?= $group_slug;?>" class="add_step needs-validation" action="" method="POST">
+					<form id="<?php echo $group_slug;?>" class="add_step needs-validation" action="" method="POST">
 						<div class="row">
 							<div class="col">
 								<div class="mb-3">
 									<label for="tour_name" class="form-label">Tour Name</label>
-									<input type="text" class="form-control" id="tour_name" placeholder="<?= $group_name;?>" value="<?= $group_name;?>" disabled>
+									<input type="text" class="form-control" id="tour_name" placeholder="<?php echo $group_name;?>" value="<?php echo $group_name;?>" disabled>
 								</div>
 							</div>
 							<div class="col">
@@ -506,7 +516,7 @@ class User_Tour_Guide_Admin {
 						<h6>Create User Tour</h6>
 						<p>Create a guided intro tour by adding steps to it here. Customize each step (you can add title, description, attach it to any dom element and add additional css class) to guide your visitors throughout your project. They will appreciate it.</p>
 
-						Place use this shortcode <code>[utg-user-tour-guide tour="<?= $group_slug;?>"]</code> on that page where you want to show the tour.
+						Place use this shortcode <code>[utg-user-tour-guide tour="<?php echo $group_slug;?>"]</code> on that page where you want to show the tour.
 					</div>
 				</div>
 			</div>
@@ -518,8 +528,11 @@ class User_Tour_Guide_Admin {
 
 		global $wpdb;
 
-		$table_name = $wpdb->prefix . $this->user_tour_guide_db_name;
-		$results = $wpdb->get_results("SELECT * FROM $table_name where `group` = '$group_slug' ORDER BY `order`"); ?>
+		$results = $wpdb->get_results(
+			$wpdb->prepare("SELECT * FROM {$wpdb->prefix}utg_user_tour_guide where `group` = %s ORDER BY `order`", $group_slug)
+		);
+
+		?>
 		<div class="row">
 				<div class="col">
 					<div class="border border-1 rounded-2 shadow-sm p-3 mt-3 your-steps">
@@ -558,7 +571,7 @@ class User_Tour_Guide_Admin {
 									<td class="edit_step">
 										<div class="d-flex justify-content-center gap-3">
 											<button data-bs-toggle="modal" data-bs-target="<?php echo '#edit-modal-' . $id;?>" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Step" id="<?php echo 'edit-';?>"><img src="<?php echo plugin_dir_url(__DIR__) . 'admin/img/edit.svg'?>" alt="Edit"></button>
-											<button id="<?= $id; ?>" data-bs-toggle="tooltip" class="delete" data-bs-placement="top" title="Remove Step"><img src="<?php echo plugin_dir_url(__DIR__) . 'admin/img/remove.svg' ?>" alt="Remove"></button>
+											<button id="<?php echo $id; ?>" data-bs-toggle="tooltip" class="delete" data-bs-placement="top" title="Remove Step"><img src="<?php echo plugin_dir_url(__DIR__) . 'admin/img/remove.svg' ?>" alt="Remove"></button>
 										</div>
 									</td>
 								</tr>
@@ -590,37 +603,37 @@ class User_Tour_Guide_Admin {
 						<div class="modal-content">
 							<div class="modal-header">
 								<h5 class="modal-title" id="modalTitleId">
-									<?= $title;?>
+									<?php echo $title;?>
 								</h5>
 								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
 								></button>
 							</div>
 							
-							<form id="<?=$id;?>" class="needs-validation edit_step" action="">
+							<form id="<?php echo$id;?>" class="needs-validation edit_step" action="">
 								<div class="modal-body">
 									<div class="row">
 										<div class="col">
 											<div class="mb-3">
-												<label for="<?= 'tour_name_'. $id;?>" class="form-label">Tour Name</label>
-												<input type="text" class="form-control" id="<?= 'tour_name_'. $id;?>" placeholder="User Tour Guide" disabled>
+												<label for="<?php echo 'tour_name_'. $id;?>" class="form-label">Tour Name</label>
+												<input type="text" class="form-control" id="<?php echo 'tour_name_'. $id;?>" placeholder="User Tour Guide" disabled>
 											</div>
 										</div>
 										<div class="col">
 											<div class="mb-3">
-												<label for="<?= 'step_title_'. $id;?>" class="form-label">Step Title</label>
-											<input type="text" class="form-control" id="<?= 'step_title_'. $id;?>" placeholder="Welcome aboard👋" value="<?= $title;?>" required>
+												<label for="<?php echo 'step_title_'. $id;?>" class="form-label">Step Title</label>
+											<input type="text" class="form-control" id="<?php echo 'step_title_'. $id;?>" placeholder="Welcome aboard👋" value="<?php echo $title;?>" required>
 											</div>
 										</div>
 									</div>
 									<div class="row">
 										<div class="col">
 											<div class="mb-3">
-												<label for="<?= 'step_order_'. $id;?>" class="form-label">Order</label>
-												<input type="number" class="form-control" id="<?= 'step_order_'. $id;?>" placeholder="1" value="<?= $order;?>" required>
+												<label for="<?php echo 'step_order_'. $id;?>" class="form-label">Order</label>
+												<input type="number" class="form-control" id="<?php echo 'step_order_'. $id;?>" placeholder="1" value="<?php echo $order;?>" required>
 											</div> 
 											<div class="mb-3">
-												<label for="<?= 'step_target_'. $id;?>" class="form-label">Target Element</label>
-												<input type="text" class="form-control" id="<?= 'step_target_'. $id;?>" placeholder="HTMLElement | Element | Class | ID" value="<?= $target?>" required>
+												<label for="<?php echo 'step_target_'. $id;?>" class="form-label">Target Element</label>
+												<input type="text" class="form-control" id="<?php echo 'step_target_'. $id;?>" placeholder="HTMLElement | Element | Class | ID" value="<?php echo $target?>" required>
 												<div class="valid-feedback">
 												Looks good!
 												</div>
@@ -628,8 +641,8 @@ class User_Tour_Guide_Admin {
 										</div>
 										<div class="col">
 											<div class="mb-3">
-												<label for="<?= 'step_content_'. $id;?>" class="form-label">Step Content</label>
-												<textarea class="form-control" id="<?= 'step_content_'. $id;?>"  rows="4" placeholder="Add instruction for this step" required><?= $content;?></textarea>
+												<label for="<?php echo 'step_content_'. $id;?>" class="form-label">Step Content</label>
+												<textarea class="form-control" id="<?php echo 'step_content_'. $id;?>"  rows="4" placeholder="Add instruction for this step" required><?php echo $content;?></textarea>
 											</div>
 										</div>
 									</div>                

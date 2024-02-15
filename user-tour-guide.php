@@ -14,7 +14,7 @@
  *
  * @wordpress-plugin
  * Plugin Name:       User Tour Guide
- * Plugin URI:        https://kamalhossan.github.io/
+ * Plugin URI:        https://wordpress.org/plugins/user-tour-guide/
  * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
  * Version:           1.0.0
  * Author:            Kamal Hossan
