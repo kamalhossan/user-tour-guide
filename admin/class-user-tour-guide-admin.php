@@ -198,8 +198,11 @@ class User_Tour_Guide_Admin {
 	// 		"SELECT DISTINCT `group` FROM {$wpdb->prefix}utg_user_tour_guide"),
 	// 	ARRAY_A
 	// );
-	$tour_query = $wpdb->prepare("SELECT DISTINCT `group` FROM {$wpdb->prefix}utg_user_tour_guide");
-	$groups = $wpdb->get_results($tour_query,ARRAY_A);
+
+	$groups = $wpdb->get_results("SELECT DISTINCT `group` FROM {$wpdb->prefix}utg_user_tour_guide",ARRAY_A);
+	// $groups = $wpdb->get_results(
+	// 	$wpdb->prepare("SELECT DISTINCT `group` FROM {$wpdb->prefix}utg_user_tour_guide")
+	// 	,ARRAY_A);
 	
 	?>
 	<div class="wrap">
@@ -216,16 +219,16 @@ class User_Tour_Guide_Admin {
 		?>
 		<!-- Nav tabs -->
 		<ul class="nav nav-tabs" id="myTab" role="tablist">
-
+	
 		<?php
-			$counter = 0;
+			$active_tab = $_SESSION['active-tab'];
+
 			foreach ($groups as $group){
 				$group_slug = $group['group'];
 				$group_name = ucwords(str_replace('-', ' ', $group_slug));
-				$counter++;
 				?>
 				<li class="nav-item" role="presentation">
-					<button class="nav-link <?php echo ($counter == 1) ? 'active': '';?>" id="<?php echo esc_html($group_slug) . '-tab'?>" data-bs-toggle="tab" data-bs-target="<?php echo '#'. esc_html($group_slug);?>"
+					<button class="nav-link <?php echo ($active_tab == $group_slug) ? 'active': '';?>" id="<?php echo esc_html($group_slug) . '-tab'?>" data-bs-toggle="tab" data-bs-target="<?php echo '#'. esc_html($group_slug);?>"
 					type="button" role="tab" aria-controls="home" aria-selected="true"><?php echo esc_html($group_name);?></button>
 				</li>
 				<?php
@@ -236,13 +239,12 @@ class User_Tour_Guide_Admin {
 		<!-- Tab panes -->
 		<div class="tab-content">
 		<?php
-			$div_counter = 0;
+
 			foreach ($groups as $group){
 				$group_slug = $group['group'];
 				$group_name = str_replace('-', ' ', $group_slug);
-				$div_counter++;
 				?>
-				<div class="tab-pane <?php echo ($div_counter == 1) ? 'active': '';?>" id="<?php echo esc_html($group_slug)?>" role="tabpanel" aria-labelledby="<?php echo esc_html($group_slug) . '-tab'?>">
+				<div class="tab-pane <?php echo ($active_tab == $group_slug) ? 'active': '';?>" id="<?php echo esc_html($group_slug)?>" role="tabpanel" aria-labelledby="<?php echo esc_html($group_slug) . '-tab'?>">
 					<?php $this -> render_tour_guide_add_response_form($group_slug); ?>
 					<?php $this -> render_tour_guide_response_table($group_slug); ?>
 				</div>
@@ -678,5 +680,21 @@ class User_Tour_Guide_Admin {
 			<?php }
 		?>
 		<?php
+	}
+
+	public function registering_session_for_tabs(){
+		if (!session_id()) {
+			session_start();
+		}
+	}
+
+	public function save_active_tab_with_session(){
+
+		check_ajax_referer( 'utg_admin_nonce', 'nonce' );
+
+		$tab_name = sanitize_text_field($_POST['activeTab']);
+		$_SESSION['active-tab'] = strtolower(str_replace(' ', '-', $tab_name));
+		echo $_SESSION['active-tab'];
+		die();
 	}
 }

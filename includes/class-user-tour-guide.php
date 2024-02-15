@@ -169,6 +169,7 @@ class User_Tour_Guide {
 
 		//Register menu page
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'user_tour_guide_settings_page' );
+		$this->loader->add_action( 'init', $plugin_admin, 'registering_session_for_tabs' );
 
 		//Register settings
 		// $this->loader->add_action( 'admin_menu', $plugin_admin, 'utg_add_settings_page');
@@ -191,6 +192,8 @@ class User_Tour_Guide {
 		$this->loader->add_action( 'wp_ajax_nopriv_utg_remove_steps_from_db', $plugin_admin, 'utg_remove_steps_from_db' );
 		$this->loader->add_action( 'wp_ajax_utg_admin_tour_skip', $plugin_admin, 'utg_admin_tour_skip' );
 		$this->loader->add_action( 'wp_ajax_nopriv_utg_admin_tour_skip', $plugin_admin, 'utg_admin_tour_skip' );
+		$this->loader->add_action( 'wp_ajax_save_active_tab', $plugin_admin, 'save_active_tab_with_session' );
+		$this->loader->add_action( 'wp_ajax_nopriv_save_active_tab', $plugin_admin, 'save_active_tab_with_session' );
 
 	}
 

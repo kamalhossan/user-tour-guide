@@ -247,6 +247,28 @@
 			})
 		})
 
+		$('.nav-link').each(function(){
+			$(this).click(function(){
+				const tabName = $(this).text();
+
+				$.ajax({
+					type: 'POST',
+					url: utg_admin_object.ajax_url,
+					data: {
+						action: 'save_active_tab',
+						nonce: utg_admin_object.nonce,
+						activeTab: tabName,
+					},
+					success: function(response){
+						console.log(response);
+					},
+					error: function(error){
+						console.log(error);
+					}
+				})
+			})
+		})
+
 		
 		if($('.utg-admin-tour').hasClass('open')){
 			$('#tourStart').modal('show');
