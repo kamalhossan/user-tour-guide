@@ -221,8 +221,13 @@ class User_Tour_Guide_Admin {
 		<ul class="nav nav-tabs" id="myTab" role="tablist">
 	
 		<?php
-			$active_tab = $_SESSION['active-tab'];
 
+			if(! isset($_SESSION['active-tab'])){
+				$active_tab = 'user-tour-guide';
+			} else {
+				$active_tab = $_SESSION['active-tab'];
+			}
+	
 			foreach ($groups as $group){
 				$group_slug = $group['group'];
 				$group_name = ucwords(str_replace('-', ' ', $group_slug));
@@ -694,7 +699,8 @@ class User_Tour_Guide_Admin {
 
 		$tab_name = sanitize_text_field($_POST['activeTab']);
 		$_SESSION['active-tab'] = strtolower(str_replace(' ', '-', $tab_name));
-		echo $_SESSION['active-tab'];
+		echo esc_js(true);
 		die();
+		
 	}
 }

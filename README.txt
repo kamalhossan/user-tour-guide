@@ -1,30 +1,23 @@
 === User Tour Guide ===
 Contributors: kamalhossan
-Donate link: http://example.com/
-Tags: introduction, walkthrough, onboarding, user onboarding, user guide, tour guide, intro js, tutorial, documentation, helper, guide, multiple tours
+Tags: onboarding, walkthrough, user onboarding, user guide, documentation
 Requires PHP: 5.6
 Requires at least: 3.0.1
 Tested up to: 3.4
-Stable tag: 4.3
+Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 User Tour Guide
 ===============
 
-A simple lightweated onboarding user tour guide plugin for WordPress. Create unlimited onboarding tour for unlimited pages.
+A simple lightweight onboarding user tour guide plugin for WordPress. Create an unlimited number of onboarding tours for unlimited pages.
 
 == Description ==
 
-User Tour Guide is an easy to use multi step tour guide plugin for WordPress user. You can create onboarding user guide tour that lets your create an interactive tour for your website visitors. This plugin provided you the ability to create unlimited number of tour steps and unlimited tour for your all website pages. An iteractive user walkthrough is a powerful way to increase user experience and custom satisfactions.
-
-This is the long description.  No limit, and you can use Markdown (as well as in the following sections).
+User Tour Guide is a user-friendly, multi-step tour guide plugin designed for WordPress users. With this plugin, you can easily create onboarding user guide tours, enabling you to provide an interactive experience for your website visitors. User Tour Guide offers the flexibility to create an unlimited number of tour steps and tours for all pages of your website. Incorporating interactive user walkthroughs is a powerful strategy to enhance user experience and customer satisfaction.
 
 == Installation ==
-
-This section describes how to install the plugin and get it working.
-
-e.g.
 
 1. Upload `user-tour-guide.zip` to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
@@ -34,15 +27,15 @@ e.g.
 
 = Can we create multiple tour for multipe page? =
 
-Yes you can click multiple tour for multiple page. Place the correct shortcode to show the correct tour.
+Yes, you can click on multiple tours for multiple pages. Place the correct shortcode to display the respective tour.
 
 = How to add, edit or delete steps? =
 
-On the User Tour Guide plugin page you have easy access to the tour step management page. You can add, update & delete new steps it's very customizatble . 
+On the User Tour Guide plugin page, you have easy access to the tour step management page. Here, you can add, update, and delete new steps, making it highly customizable.
 
 = Can I open this tour with custom button? =
 
-Yes you can show a begin tour button on the fronted for the user. User will be able to start the tour from there.
+Yes, you can display a "Begin Tour" button on the frontend for the user. Users will be able to start the tour from there.
 
 == Screenshots ==
 
