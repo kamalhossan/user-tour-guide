@@ -57,7 +57,7 @@ $page_name = '';
                     <div class="col">
                         <div class="mb-3">
                             <label for="step_order" class="form-label">Order</label>
-                            <input type="number" class="form-control" id="step_order" placeholder="1" value="<?php echo $max_order + 1;?>" min="<?php echo $max_order + 1;?>" required>
+                            <input type="number" class="form-control" id="step_order" placeholder="1" value="<?php echo esc_html($max_order + 1);?>" min="<?php echo esc_html($max_order + 1);?>" required>
                         </div> 
                         <div class="mb-3">
                             <label for="step_target" class="form-label">Target Element</label>
@@ -123,14 +123,14 @@ $page_name = '';
                         $target = $result -> target;
                         ?>
                     <tr>
-                        <td><?php echo $order;?></td>
-                        <td><?php echo $title;?></td>
-                        <td><?php echo $content;?></td>
-                        <td><?php echo $target;?></td>
+                        <td><?php echo esc_html($order);?></td>
+                        <td><?php echo esc_html($title);?></td>
+                        <td><?php echo esc_html($content);?></td>
+                        <td><?php echo esc_html($target);?></td>
                         <td class="edit_step">
                             <div class="d-flex justify-content-center gap-3">
-                                <button data-bs-toggle="modal" data-bs-target="<?php echo '#edit-modal-' . $id;?>" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Step" id="<?php echo 'edit-';?>"><img src="<?php echo plugin_dir_url(__DIR__) . 'img/edit.svg'?>" alt="Edit"></button>
-                                <button id="<?php echo $id; ?>" data-bs-toggle="tooltip" class="delete" data-bs-placement="top" title="Remove Step"><img src="<?php echo plugin_dir_url(__DIR__) . 'img/remove.svg' ?>" alt="Remove"></button>
+                                <button data-bs-toggle="modal" data-bs-target="<?php echo esc_html('#edit-modal-' . $id);?>" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Step"><img src="<?php echo esc_html(plugin_dir_url(__DIR__) . 'img/edit.svg')?>" alt="Edit"></button>
+                                <button id="<?php echo esc_html($id); ?>" data-bs-toggle="tooltip" class="delete" data-bs-placement="top" title="Remove Step"><img src="<?php echo esc_html(plugin_dir_url(__DIR__) . 'img/remove.svg') ?>" alt="Remove"></button>
                             </div>
                         </td>
                     </tr>

@@ -198,7 +198,8 @@ class User_Tour_Guide_Admin {
 	// 		"SELECT DISTINCT `group` FROM {$wpdb->prefix}utg_user_tour_guide"),
 	// 	ARRAY_A
 	// );
-	$groups = $wpdb->get_results("SELECT DISTINCT `group` FROM {$wpdb->prefix}utg_user_tour_guide",ARRAY_A);
+	$tour_query = $wpdb->prepare("SELECT DISTINCT `group` FROM {$wpdb->prefix}utg_user_tour_guide");
+	$groups = $wpdb->get_results($tour_query,ARRAY_A);
 	
 	?>
 	<div class="wrap">
@@ -224,8 +225,8 @@ class User_Tour_Guide_Admin {
 				$counter++;
 				?>
 				<li class="nav-item" role="presentation">
-					<button class="nav-link <?php echo ($counter == 1) ? 'active': '';?>" id="<?php echo $group_slug . '-tab'?>" data-bs-toggle="tab" data-bs-target="<?php echo '#'. $group_slug;?>"
-					type="button" role="tab" aria-controls="home" aria-selected="true"><?php echo $group_name;?></button>
+					<button class="nav-link <?php echo ($counter == 1) ? 'active': '';?>" id="<?php echo esc_html($group_slug) . '-tab'?>" data-bs-toggle="tab" data-bs-target="<?php echo '#'. esc_html($group_slug);?>"
+					type="button" role="tab" aria-controls="home" aria-selected="true"><?php echo esc_html($group_name);?></button>
 				</li>
 				<?php
 			}
@@ -241,7 +242,7 @@ class User_Tour_Guide_Admin {
 				$group_name = str_replace('-', ' ', $group_slug);
 				$div_counter++;
 				?>
-				<div class="tab-pane <?php echo ($div_counter == 1) ? 'active': '';?>" id="<?php echo $group_slug?>" role="tabpanel" aria-labelledby="<?php echo $group_slug . '-tab'?>">
+				<div class="tab-pane <?php echo ($div_counter == 1) ? 'active': '';?>" id="<?php echo esc_html($group_slug)?>" role="tabpanel" aria-labelledby="<?php echo esc_html($group_slug) . '-tab'?>">
 					<?php $this -> render_tour_guide_add_response_form($group_slug); ?>
 					<?php $this -> render_tour_guide_response_table($group_slug); ?>
 				</div>
@@ -314,10 +315,12 @@ class User_Tour_Guide_Admin {
 		global $wpdb;
 
 		$table_name = $wpdb->prefix . $this-> user_tour_guide_db_name;
-		$results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}%s", $this -> user_tour_guide_db_name, ARRAY_A);
+		$results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}", $this -> user_tour_guide_db_name, ARRAY_A);
 
 		header('Content-Type: application/json');
-		echo $steps = wp_json_encode($results);
+		$steps = wp_json_encode($results);
+
+		echo esc_js($steps);
 
 		die();
 	}
@@ -410,7 +413,7 @@ class User_Tour_Guide_Admin {
 
 		$wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->prefix}utg_user_tour_guide WHERE `id` = %s", $db_id));
 
-		echo 'deleted' . $db_id;
+		echo esc_html('deleted' . $db_id);
 
 		die();
 		
@@ -455,22 +458,33 @@ class User_Tour_Guide_Admin {
 
 		$user_id = get_current_user_id();
 		update_user_meta( $user_id, 'utg_admin_tour' , true);
-		echo true;
+		echo esc_js(true);
 		die();
 	}
 
 	public function render_tour_guide_add_response_form($group_slug = 'user-tour-guide'){
+		
+		global $wpdb;
+
 		$group_name = ucwords(str_replace('-', ' ', $group_slug));
+
+		$max_order = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT COUNT(*) FROM {$wpdb->prefix}utg_user_tour_guide WHERE `group` = %s",
+				$group_slug
+			)
+		);
+
 		?>
 		<div class="row">
 			<div class="col-md-8">
 				<div class="border border-1 rounded-2 shadow-sm p-3 mt-3 align-content-center items-center ">
-					<form id="<?php echo $group_slug;?>" class="add_step needs-validation" action="" method="POST">
+					<form id="<?php echo esc_html($group_name);?>" class="add_step needs-validation" action="" method="POST">
 						<div class="row">
 							<div class="col">
 								<div class="mb-3">
 									<label for="tour_name" class="form-label">Tour Name</label>
-									<input type="text" class="form-control" id="tour_name" placeholder="<?php echo $group_name;?>" value="<?php echo $group_name;?>" disabled>
+									<input type="text" class="form-control" id="tour_name" placeholder="<?php echo esc_html($group_name);?>" value="<?php echo esc_html($group_name);?>" disabled>
 								</div>
 							</div>
 							<div class="col">
@@ -484,7 +498,7 @@ class User_Tour_Guide_Admin {
 							<div class="col">
 								<div class="mb-3">
 									<label for="step_order" class="form-label">Order</label>
-									<input type="number" class="form-control" id="step_order" placeholder="1" value="<?php echo $max_order + 1;?>" min="<?php echo $max_order + 1;?>" required>
+									<input type="number" class="form-control" id="step_order" placeholder="1" value="<?php echo esc_html($max_order + 1);?>" min="<?php echo esc_html($max_order + 1);?>" required>
 								</div> 
 								<div class="mb-3">
 									<label for="step_target" class="form-label">Target Element</label>
@@ -516,7 +530,7 @@ class User_Tour_Guide_Admin {
 						<h6>Create User Tour</h6>
 						<p>Create a guided intro tour by adding steps to it here. Customize each step (you can add title, description, attach it to any dom element and add additional css class) to guide your visitors throughout your project. They will appreciate it.</p>
 
-						Place use this shortcode <code>[utg-user-tour-guide tour="<?php echo $group_slug;?>"]</code> on that page where you want to show the tour.
+						Place use this shortcode <code>[utg-user-tour-guide tour="<?php echo esc_html($group_slug);?>"]</code> on that page where you want to show the tour.
 					</div>
 				</div>
 			</div>
@@ -564,14 +578,14 @@ class User_Tour_Guide_Admin {
 									$target = $result -> target;
 									?>
 								<tr>
-									<td><?php echo $order;?></td>
-									<td><?php echo $title;?></td>
-									<td><?php echo $content;?></td>
-									<td><?php echo $target;?></td>
+									<td><?php echo esc_html($order);?></td>
+									<td><?php echo esc_html($title);?></td>
+									<td><?php echo esc_html($content);?></td>
+									<td><?php echo esc_html($target);?></td>
 									<td class="edit_step">
 										<div class="d-flex justify-content-center gap-3">
-											<button data-bs-toggle="modal" data-bs-target="<?php echo '#edit-modal-' . $id;?>" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Step" id="<?php echo 'edit-';?>"><img src="<?php echo plugin_dir_url(__DIR__) . 'admin/img/edit.svg'?>" alt="Edit"></button>
-											<button id="<?php echo $id; ?>" data-bs-toggle="tooltip" class="delete" data-bs-placement="top" title="Remove Step"><img src="<?php echo plugin_dir_url(__DIR__) . 'admin/img/remove.svg' ?>" alt="Remove"></button>
+											<button data-bs-toggle="modal" data-bs-target="<?php echo esc_html('#edit-modal-' . $id);?>" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Step"><img src="<?php echo esc_html(plugin_dir_url(__DIR__) . 'admin/img/edit.svg')?>" alt="Edit"></button>
+											<button id="<?php echo esc_html($id);?>" data-bs-toggle="tooltip" class="delete" data-bs-placement="top" title="Remove Step"><img src="<?php echo esc_html(plugin_dir_url(__DIR__) . 'admin/img/remove.svg')?>" alt="Remove"></button>
 										</div>
 									</td>
 								</tr>
@@ -598,42 +612,42 @@ class User_Tour_Guide_Admin {
 				$content = $result -> content;
 				$target = $result -> target;
 				?>
-				<div class="modal fade" id="<?php echo 'edit-modal-' . $id;?>" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+				<div class="modal fade" id="<?php echo esc_html('edit-modal-' . $id);?>" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
 					<div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg" role="document">
 						<div class="modal-content">
 							<div class="modal-header">
 								<h5 class="modal-title" id="modalTitleId">
-									<?php echo $title;?>
+									<?php echo esc_html($title);?>
 								</h5>
 								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
 								></button>
 							</div>
 							
-							<form id="<?php echo$id;?>" class="needs-validation edit_step" action="">
+							<form id="<?php echo esc_html($id);?>" class="needs-validation edit_step" action="">
 								<div class="modal-body">
 									<div class="row">
 										<div class="col">
 											<div class="mb-3">
-												<label for="<?php echo 'tour_name_'. $id;?>" class="form-label">Tour Name</label>
-												<input type="text" class="form-control" id="<?php echo 'tour_name_'. $id;?>" placeholder="User Tour Guide" disabled>
+												<label for="<?php echo esc_html('tour_name_'. $id);?>" class="form-label">Tour Name</label>
+												<input type="text" class="form-control" id="<?php echo esc_html('tour_name_'. $id);?>" placeholder="User Tour Guide" disabled>
 											</div>
 										</div>
 										<div class="col">
 											<div class="mb-3">
-												<label for="<?php echo 'step_title_'. $id;?>" class="form-label">Step Title</label>
-											<input type="text" class="form-control" id="<?php echo 'step_title_'. $id;?>" placeholder="Welcome aboard👋" value="<?php echo $title;?>" required>
+												<label for="<?php echo esc_html('step_title_'. $id);?>" class="form-label">Step Title</label>
+											<input type="text" class="form-control" id="<?php echo esc_html('step_title_'. $id);?>" placeholder="Welcome aboard👋" value="<?php echo esc_html($title);?>" required>
 											</div>
 										</div>
 									</div>
 									<div class="row">
 										<div class="col">
 											<div class="mb-3">
-												<label for="<?php echo 'step_order_'. $id;?>" class="form-label">Order</label>
-												<input type="number" class="form-control" id="<?php echo 'step_order_'. $id;?>" placeholder="1" value="<?php echo $order;?>" required>
+												<label for="<?php echo esc_html('step_order_'. $id);?>" class="form-label">Order</label>
+												<input type="number" class="form-control" id="<?php echo esc_html('step_order_'. $id);?>" placeholder="1" value="<?php echo esc_html($order);?>" required>
 											</div> 
 											<div class="mb-3">
-												<label for="<?php echo 'step_target_'. $id;?>" class="form-label">Target Element</label>
-												<input type="text" class="form-control" id="<?php echo 'step_target_'. $id;?>" placeholder="HTMLElement | Element | Class | ID" value="<?php echo $target?>" required>
+												<label for="<?php echo esc_html('step_target_'. $id);?>" class="form-label">Target Element</label>
+												<input type="text" class="form-control" id="<?php echo esc_html('step_target_'. $id);?>" placeholder="HTMLElement | Element | Class | ID" value="<?php echo esc_html($target)?>" required>
 												<div class="valid-feedback">
 												Looks good!
 												</div>
@@ -641,8 +655,8 @@ class User_Tour_Guide_Admin {
 										</div>
 										<div class="col">
 											<div class="mb-3">
-												<label for="<?php echo 'step_content_'. $id;?>" class="form-label">Step Content</label>
-												<textarea class="form-control" id="<?php echo 'step_content_'. $id;?>"  rows="4" placeholder="Add instruction for this step" required><?php echo $content;?></textarea>
+												<label for="<?php echo esc_html('step_content_'. $id);?>" class="form-label">Step Content</label>
+												<textarea class="form-control" id="<?php echo esc_html('step_content_'. $id);?>"  rows="4" placeholder="Add instruction for this step" required><?php echo esc_html($content);?></textarea>
 											</div>
 										</div>
 									</div>                

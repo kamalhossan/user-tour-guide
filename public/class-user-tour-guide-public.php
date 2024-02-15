@@ -134,7 +134,7 @@ class User_Tour_Guide_Public {
 
 		if(get_option( 'show_begin_tour', true)){
 			echo '<div class="utg-guide">';
-			echo '<button id="'. $tour_name .'" class="utg-tour-start">Begin Tour</button>';
+			echo '<button id="'. esc_html($tour_name) .'" class="utg-tour-start">Begin Tour</button>';
 			echo '</div>';
 		}
 
@@ -174,7 +174,6 @@ class User_Tour_Guide_Public {
 
 		header('Content-Type: application/json');
 		echo $steps = wp_json_encode($results);
-
 		die();
 	}
 

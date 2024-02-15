@@ -12,10 +12,10 @@ if(!$check_meta){
 <div class="modal fade" id="tourStart" tabindex="-1" aria-labelledby="tourStartLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-custom">
         <div class="modal-content position-relative">
-            <img class="limit-alert" src="<?php echo plugin_dir_url(__DIR__) . 'img/limit-alert.svg';?>" alt="Limit Alert Img">
+            <img class="limit-alert" src="<?php echo esc_html(plugin_dir_url(__DIR__) . 'img/limit-alert.svg');?>" alt="Limit Alert Img">
             <div class="modal-header d-block text-center">
                 <h5 class="modal-title mt-3" id="tourStartLabel">
-                    <?php echo 'Welcome to User Tour Guide. Enjoy the tour!';?>
+                    <?php echo esc_html('Welcome to User Tour Guide. Enjoy the tour!');?>
                 </h5>
             </div>
             <div class="modal-body text-center">
@@ -24,8 +24,8 @@ if(!$check_meta){
                 </p>
             </div>
             <div class="modal-footer">
-                <button id="admin-skip" type="button" class="btn btn-secondary <?php echo $page_name;?>" data-bs-dismiss="modal" aria-label="Close">Skip Tour</button>
-                <button id="start-tour" type="button" class="btn btn-primary <?php echo $page_name;?>" data-bs-dismiss="modal" aria-label="Close">Start</button>
+                <button id="admin-skip" type="button" class="btn btn-secondary <?php echo esc_html($page_name);?>" data-bs-dismiss="modal" aria-label="Close">Skip Tour</button>
+                <button id="start-tour" type="button" class="btn btn-primary <?php echo esc_html($page_name);?>" data-bs-dismiss="modal" aria-label="Close">Start</button>
             </div>
         </div>
     </div>

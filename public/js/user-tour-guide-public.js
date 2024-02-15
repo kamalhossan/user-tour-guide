@@ -59,6 +59,10 @@
 			},
 			error: function (error) {
 				console.log(error);
+				if(error){
+					$('.utg-tour-start').text('No data');
+					$('.utg-tour-start').attr('disabled', 'disabled');
+				}
 			}
 		});
 
