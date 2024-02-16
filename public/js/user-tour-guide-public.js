@@ -47,11 +47,23 @@
 			},
 			success: function (response) {
 				// console.log(response);
-				if(response.length === 0){
+				if (response.length === 0) {
 					$('.utg-tour-start').text('No tour found');
 					$('.utg-tour-start').attr('disabled', 'disabled');
-				} else {
-					publicTour.addSteps(response)
+				} else if (response) {
+					const tourID = $('.utg-tour-start').attr('id');
+					let tourFound = false
+					response.forEach((e) => {
+						if (tourID == e.group) {
+							publicTour.addSteps(response);
+							tourFound = true;
+							return;
+						}
+					});
+					if (!tourFound) {
+						$('.utg-tour-start').text('No tour found');
+						$('.utg-tour-start').attr('disabled', 'disabled');
+					}
 				}
 				if(utg_public_object.complete){
 					publicTour.start("user-tour-guide");
@@ -66,11 +78,9 @@
 			}
 		});
 
-		$('.utg-tour-start').each(function(){
+		$(document).on('click', '.utg-tour-start', function(e){
 			const id = $(this).attr('id');
-			$(this).click(function(){
-				publicTour.start(id);
-			})			
+			publicTour.start(id);
 		})
 
 		publicTour.onAfterExit(()=>{
@@ -84,6 +94,7 @@
 		}) 
 
 		function completeMeta(){
+			$("html, body").animate({ scrollTop: 0 }, "slow");
 			$.ajax({
 				type: 'POST',
 				url: utg_public_object.ajax_url,

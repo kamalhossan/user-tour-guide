@@ -132,10 +132,16 @@ class User_Tour_Guide_Public {
 
 		ob_start();
 
-		if(get_option( 'show_begin_tour', true)){
-			echo '<div class="utg-guide">';
-			echo '<button id="'. esc_html($tour_name) .'" class="utg-tour-start">Begin Tour</button>';
-			echo '</div>';
+		if(get_option( 'show_begin_tour', true)){ ?>
+			<script>
+				window.addEventListener('DOMContentLoaded', function(){
+					const newDiv = document.createElement("div");
+					newDiv.className = "utg-guide";
+					newDiv.innerHTML = `<button id="<?php echo esc_html($tour_name)?>" class="utg-tour-start">Begin Tour</button>`;
+					document.body.appendChild(newDiv);
+				});
+			</script>
+		<?php
 		}
 
 		if(get_option( 'auto_start_for_new_user', true )){
@@ -173,7 +179,7 @@ class User_Tour_Guide_Public {
 		$results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}utg_user_tour_guide", ARRAY_A);
 
 		header('Content-Type: application/json');
-		wp_json_encode($results);
+		echo wp_json_encode($results);
 		die();
 	}
 

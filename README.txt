@@ -12,11 +12,13 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 User Tour Guide
 ===============
 
-A simple lightweight onboarding user tour guide plugin for WordPress. Create an unlimited number of onboarding tours for unlimited pages.
+A simple lightweight onboarding user tour guide plugin for WordPress. Create an unlimited number of onboarding tours for unlimited pages. Work with any page builder, such as Divi, Elementor, Oxygen, Gurenburg etc.
 
 == Description ==
 
 User Tour Guide is a user-friendly, multi-step tour guide plugin designed for WordPress users. With this plugin, you can easily create onboarding user guide tours, enabling you to provide an interactive experience for your website visitors. User Tour Guide offers the flexibility to create an unlimited number of tour steps and tours for all pages of your website. Incorporating interactive user walkthroughs is a powerful strategy to enhance user experience and customer satisfaction.
+
+Support all the themes including popular theme (Elementor, Divi). Just follow simple step to Integrate with any page you have on your website.
 
 == Installation ==
 

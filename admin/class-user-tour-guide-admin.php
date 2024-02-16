@@ -577,12 +577,14 @@ class User_Tour_Guide_Admin {
 
 							<?php
 								// arsort($results);
+								$counter = 0;
 								foreach($results as $result){ 
 									$id = $result -> id;
 									$order = $result -> order;
 									$title = $result -> title;
 									$content = $result -> content;
 									$target = $result -> target;
+									$counter++;
 									?>
 								<tr>
 									<td><?php echo esc_html($order);?></td>
@@ -592,7 +594,15 @@ class User_Tour_Guide_Admin {
 									<td class="edit_step">
 										<div class="d-flex justify-content-center gap-3">
 											<button data-bs-toggle="modal" data-bs-target="<?php echo esc_html('#edit-modal-' . $id);?>" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Step"><img src="<?php echo esc_html(plugin_dir_url(__DIR__) . 'admin/img/edit.svg')?>" alt="Edit"></button>
-											<button id="<?php echo esc_html($id);?>" data-bs-toggle="tooltip" class="delete" data-bs-placement="top" title="Remove Step"><img src="<?php echo esc_html(plugin_dir_url(__DIR__) . 'admin/img/remove.svg')?>" alt="Remove"></button>
+											<?php
+											if($group_slug == 'user-tour-guide' && $counter == 1){ ?>
+												<button class="delete" data-bs-placement="top" title="Can't Delete" disabled><img src="<?php echo esc_html(plugin_dir_url(__DIR__) . 'admin/img/remove.svg')?>" alt="Remove"></button>
+											<?php
+											} else{ ?>
+												<button id="<?php echo esc_html($id);?>" data-bs-toggle="tooltip" class="delete" data-bs-placement="top" title="Remove Step"><img src="<?php echo esc_html(plugin_dir_url(__DIR__) . 'admin/img/remove.svg')?>" alt="Remove"></button>
+											<?php
+											}
+											?>
 										</div>
 									</td>
 								</tr>
