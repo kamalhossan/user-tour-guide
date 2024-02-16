@@ -61,6 +61,16 @@ class User_Tour_Guide_Admin {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 		$this->user_tour_guide_db_name = $db_name;
+		$this->load_dependencies();
+
+	}
+
+	private function load_dependencies(){
+		/**
+		 * The class responsible for defining doing all queries.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-user-tour-guide-query.php';
+
 	}
 
 	/**
@@ -189,20 +199,9 @@ class User_Tour_Guide_Admin {
 	if ( ! current_user_can( 'manage_options' ) ) {
 		return;
 	}
+	$utg_query = new User_Tour_Guide_Query();
+	$groups =  $utg_query->get_groups();
 
-	global $wpdb;
-	$table_name = $wpdb->prefix . $this -> user_tour_guide_db_name;
-
-	// $groups = $wpdb->get_results(
-	// 	$wpdb->prepare(
-	// 		"SELECT DISTINCT `group` FROM {$wpdb->prefix}utg_user_tour_guide"),
-	// 	ARRAY_A
-	// );
-
-	$groups = $wpdb->get_results("SELECT DISTINCT `group` FROM {$wpdb->prefix}utg_user_tour_guide",ARRAY_A);
-	// $groups = $wpdb->get_results(
-	// 	$wpdb->prepare("SELECT DISTINCT `group` FROM {$wpdb->prefix}utg_user_tour_guide")
-	// 	,ARRAY_A);
 	
 	?>
 	<div class="wrap">
@@ -313,34 +312,28 @@ class User_Tour_Guide_Admin {
 
 	}
 
-	public function utg_get_tour_data_from_db(){
+	// public function utg_get_tour_data_from_db(){
 
-		/**
-		 * getting all the steps from db for showing this on fronted
-		 */
+	// 	/**
+	// 	 * getting all the steps from db for showing this on fronted
+	// 	 */
 
-		global $wpdb;
+	// 	global $wpdb;
 
-		$table_name = $wpdb->prefix . $this-> user_tour_guide_db_name;
-		$results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}", $this -> user_tour_guide_db_name, ARRAY_A);
+	// 	$table_name = $wpdb->prefix . $this-> user_tour_guide_db_name;
+	// 	$results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}", $this -> user_tour_guide_db_name, ARRAY_A);
 
-		header('Content-Type: application/json');
-		$steps = wp_json_encode($results);
+	// 	header('Content-Type: application/json');
+	// 	$steps = wp_json_encode($results);
 
-		echo esc_js($steps);
+	// 	echo esc_js($steps);
 
-		die();
-	}
+	// 	die();
+	// }
 
 	public function utg_add_steps_to_db(){
 
 		check_ajax_referer( 'utg_admin_nonce', 'nonce' );
-
-		/**
-		 * adds steps will store the steps on the database
-		 */
-
-		global $wpdb;
 
 		$step_title = sanitize_text_field($_POST['stepTitle']);
 		$step_content = sanitize_text_field($_POST['stepContent']);
@@ -349,34 +342,10 @@ class User_Tour_Guide_Admin {
 		$tour_name =sanitize_text_field($_POST['tourName']);
 		$tour_name = strtolower(str_replace(' ', '-', $tour_name));
 
-		$table_name = $wpdb->prefix . $this->user_tour_guide_db_name;
+		$utg_query = new User_Tour_Guide_Query();
+		$insert_data = $utg_query -> insert_steps_to_db($step_title, $step_content, $step_target, $step_order, $tour_name);
 
-		if ($wpdb->get_var("SHOW TABLES LIKE %s", $table_name) != $table_name) {
-
-			$charset_collate = $wpdb->get_charset_collate();
-	
-			$sql = "CREATE TABLE $table_name (
-				id MEDIUMINT(9) NOT NULL AUTO_INCREMENT,
-				`title` VARCHAR(100) NULL,
-				`content` VARCHAR(500) NULL,
-				`target` VARCHAR(100) NULL,
-				`order` VARCHAR(50) NULL,
-				`group` VARCHAR(50) NULL,
-				PRIMARY KEY (id)
-			) $charset_collate;";
-	
-			require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-
-			$results = dbDelta($sql);
-
-			if($results !== false){
-					$this -> run_add_step_to_db($step_title, $step_content, $step_target, $step_order, $tour_name);
-			}
-		} else {
-			$this -> run_add_step_to_db($step_title, $step_content, $step_target, $step_order, $tour_name);
-		}
-
-		echo true;
+		echo esc_html($insert_data);
 
 		die();
 	}
@@ -386,23 +355,16 @@ class User_Tour_Guide_Admin {
 
 		check_ajax_referer( 'utg_admin_nonce', 'nonce' );
 
-		global $wpdb;
-
 		$db_id = sanitize_text_field($_POST['id']);
 		$step_title = sanitize_text_field($_POST['stepTitle']);
 		$step_content = sanitize_text_field($_POST['stepContent']);
 		$step_target = sanitize_text_field($_POST['stepTarget']);
 		$step_order =sanitize_text_field($_POST['stepOrder']);
 
-		$table_name = $wpdb->prefix . $this->user_tour_guide_db_name;
+		$utg_query = new User_Tour_Guide_Query();
+		$insert_data =  $utg_query -> edit_step_in_db($db_id, $step_title, $step_content, $step_target, $step_order);
 
-		$wpdb->query(
-			$wpdb->prepare(
-			"UPDATE {$wpdb->prefix}utg_user_tour_guide SET `title` = %s, `content` = %s,`target` = %s , `order` = %s WHERE `id` = %s",
-			$step_title, $step_content , $step_target, $step_order , $db_id)
-		);
-
-		echo 'updated';
+		echo esc_html($insert_data) ;
 
 		die();
 		
@@ -412,40 +374,14 @@ class User_Tour_Guide_Admin {
 
 		check_ajax_referer( 'utg_admin_nonce', 'nonce' );
 
-		global $wpdb;
-
 		$db_id = sanitize_text_field($_POST['id']);
 
-		$table_name = $wpdb->prefix . $this->user_tour_guide_db_name;
-
-		$wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->prefix}utg_user_tour_guide WHERE `id` = %s", $db_id));
-
-		echo esc_html('deleted' . $db_id);
+		$utg_query = new User_Tour_Guide_Query();
+		$deleted = $utg_query -> delete_step_from_db($db_id);
+		
+		echo esc_html($deleted . ' '.$db_id);
 
 		die();
-		
-	}
-
-	// this function will add steps data into the database
-	public function run_add_step_to_db($step_title = '', $step_content = '', $step_target = '', $step_order = '', $tour_name = ''){
-
-		global $wpdb;
-
-		$table_name = $wpdb->prefix . $this->user_tour_guide_db_name;
-
-		// right wpdb query to insert data into table
-		$wpdb->query(
-			$wpdb->prepare(
-				"INSERT INTO {$wpdb->prefix}utg_user_tour_guide
-				(`title`, `content`, `target`, `order`, `group`)
-				VALUES (%s, %s, %s, %d, %s)",
-				$step_title,
-				$step_content,
-				$step_target,
-				$step_order,
-				$tour_name
-			)
-		);
 		
 	}
 
@@ -471,16 +407,9 @@ class User_Tour_Guide_Admin {
 
 	public function render_tour_guide_add_response_form($group_slug = 'user-tour-guide'){
 		
-		global $wpdb;
-
 		$group_name = ucwords(str_replace('-', ' ', $group_slug));
-
-		$max_order = $wpdb->get_var(
-			$wpdb->prepare(
-				"SELECT COUNT(*) FROM {$wpdb->prefix}utg_user_tour_guide WHERE `group` = %s",
-				$group_slug
-			)
-		);
+		$utg_query = new User_Tour_Guide_Query();
+		$max_order = $utg_query -> get_max_count_for_group($group_slug);
 
 		?>
 		<div class="row">
@@ -547,11 +476,8 @@ class User_Tour_Guide_Admin {
 
 	public function render_tour_guide_response_table($group_slug = 'user-tour-guide'){
 
-		global $wpdb;
-
-		$results = $wpdb->get_results(
-			$wpdb->prepare("SELECT * FROM {$wpdb->prefix}utg_user_tour_guide where `group` = %s ORDER BY `order`", $group_slug)
-		);
+		$utg_query = new User_Tour_Guide_Query();
+		$results = $utg_query->get_tour_data_by_group_slug($group_slug);
 
 		?>
 		<div class="row">

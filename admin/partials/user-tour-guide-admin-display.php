@@ -17,9 +17,8 @@
 
 <?php
 
-global $wpdb;
-
-$results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}utg_user_tour_guide where `group` LIKE 'User-Tour-Guide' ORDER BY `order`");
+$utg_query = new User_Tour_Guide_Query();
+$results = $utg_query->get_tour_data_by_group_slug('user-tour-guide');
 
 $orders = [];
 

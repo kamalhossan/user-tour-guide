@@ -193,7 +193,7 @@
 				const editTarget = $('#step_target_' + id).val();
 				const editOrder = $('#step_order_' + id).val();
 
-				console.log(id, editTitle, editContent, editTarget, editOrder);
+				// console.log(id, editTitle, editContent, editTarget, editOrder);
 
 				$.ajax({
 					type: 'POST',
