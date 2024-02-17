@@ -209,7 +209,13 @@ class User_Tour_Guide_Admin {
 			<h2><?php esc_html_e( 'User Tour Guide Options', 'user-tour-guide' ); ?></h2>	
 			<div class="action">
 				<button id="utg_sample" class="btn btn-primary">Begin Sample Tour</button>
-				<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#new-tour" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Step" id="<?php echo 'edit-';?>">+ Create a new Tour</button>
+				<?php
+				if($groups && count($groups) > 0){
+					?>
+					<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#new-tour" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Step" id="<?php echo 'edit-';?>">+ Create a new Tour</button>
+					<?php
+				}
+				?>
 			</div>
 		</div>
 	
@@ -221,8 +227,9 @@ class User_Tour_Guide_Admin {
 	
 		<?php
 
-			if(! isset($_SESSION['active-tab'])){
-				$active_tab = 'user-tour-guide';
+			if(!isset($_SESSION['active-tab'])){
+				$_SESSION['active-tab'] = 'user-tour-guide';
+				$active_tab = $_SESSION['active-tab'];
 			} else {
 				$active_tab = $_SESSION['active-tab'];
 			}
@@ -464,9 +471,9 @@ class User_Tour_Guide_Admin {
 					</div>
 					<div class="details">
 						<h6>Create User Tour</h6>
-						<p>Create a guided intro tour by adding steps to it here. Customize each step (you can add title, description, attach it to any dom element and add additional css class) to guide your visitors throughout your project. They will appreciate it.</p>
-
-						Place use this shortcode <code>[utg-user-tour-guide tour="<?php echo esc_html($group_slug);?>"]</code> on that page where you want to show the tour.
+						<p class="fs-6">Begin by creating a guided introductory tour for your project. Add steps to the tour with customizations such as titles, descriptions, attachments to specific DOM elements, and additional CSS classes to effectively guide your visitors through your project. Your visitors will value this interactive guidance.</p>
+						
+						<p class="fs-6">To display the tour on a specific page, insert the shortcode <code>[utg-user-tour-guide tour="<?php echo esc_html($group_slug);?>"]</code> into that page.</p>
 					</div>
 				</div>
 			</div>

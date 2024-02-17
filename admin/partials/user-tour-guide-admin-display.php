@@ -83,9 +83,9 @@ $page_name = '';
         <div class="border border-1 rounded-2 shadow-sm p-3 mt-3 tour-response">
             <div class="details">
                 <h6>Create User Tour</h6>
-                <p>Create a guided intro tour by adding steps to it here. Customize each step (you can add title, description, attach it to any dom element and add additional css class) to guide your visitors throughout your project. They will appreciate it.</p>
-
-                Place use this shortcode <code>[utg-user-tour-guide]</code> on that page where you want to show the tour.
+                <p class="fs-6">Begin by creating a guided introductory tour for your project. Add steps to the tour with customizations such as titles, descriptions, attachments to specific DOM elements, and additional CSS classes to effectively guide your visitors through your project. Your visitors will value this interactive guidance.</p>
+                
+                <p class="fs-6">To display the tour on a specific page, insert the shortcode <code>[utg-user-tour-guide]</code> into that page.</p>
             </div>
         </div>
     </div>
