@@ -46,7 +46,7 @@
 				nonce: utg_public_object.nonce,
 			},
 			success: function (response) {
-				// console.log(response);
+				console.log(response);
 				if (response.length === 0) {
 					$('.utg-tour-start').text('No tour found');
 					$('.utg-tour-start').attr('disabled', 'disabled');
