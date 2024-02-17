@@ -15,10 +15,10 @@ class User_Tour_Guide_Query {
      * The name of the database table for this plugin.
      *
      * @since    1.0.0
-     * @access   private
+     * @access   public
      * @var      string    $table_name    The name of the database table.
      */
-    private $table_name;
+    public $table_name;
 
     /**
      * Initialize the class and set its properties.
@@ -41,10 +41,9 @@ class User_Tour_Guide_Query {
         $groups = wp_cache_get($cache_key);
         if (false === $groups) {
             global $wpdb;
-            $query = $wpdb->prepare(
-                "SELECT DISTINCT `group` FROM {$this->table_name}"
-            );
-            $groups = $wpdb->get_results($query, ARRAY_A);
+            $groups = $wpdb->get_results($wpdb->prepare(
+                "SELECT DISTINCT `group` FROM {$wpdb->prefix}utg_user_tour_guide"
+            ), ARRAY_A);
             wp_cache_set($cache_key, $groups);
         }
         return $groups;
@@ -59,10 +58,16 @@ class User_Tour_Guide_Query {
      * @return   array     Tour data for the specified group.
      */
     public function get_tour_data_by_group_slug($group_slug = 'user-tour-guide') {
-        global $wpdb;
-        $tour_data = $wpdb->get_results(
-            $wpdb->prepare("SELECT * FROM {$this->table_name} WHERE `group` = %s ORDER BY `order`", $group_slug)
-        );
+        $cache_key = 'utg_tour_data_' . $group_slug;
+        $tour_data = wp_cache_get($cache_key);
+        if(false === $tour_data){
+            global $wpdb;
+            $tour_data = $wpdb->get_results(
+                $wpdb->prepare("SELECT * FROM {$wpdb->prefix}utg_user_tour_guide WHERE `group` = %s ORDER BY `order`", $group_slug)
+            );
+            wp_cache_set($cache_key, $tour_data);
+        }
+       
         return $tour_data;
     }
 
@@ -77,18 +82,15 @@ class User_Tour_Guide_Query {
         $cache_key = 'count' . $group_slug;
         $max_count = wp_cache_get($cache_key);
 
-        global $wpdb;
-        $count = $wpdb->get_var(
-            $wpdb->prepare("SELECT COUNT(*) FROM {$this->table_name} WHERE `group` = %s", $group_slug)
-        );
-
-        if($max_count !== $count ){
-            wp_cache_delete($cache_key);
-            $max_count = $count;
-            wp_cache_set($cache_key, $max_count, '', 3600);
+        if(false === $max_count){
+            global $wpdb;
+            $count = $wpdb->get_var(
+                $wpdb->prepare("SELECT COUNT(*) FROM {$wpdb->prefix}utg_user_tour_guide WHERE `group` = %s", $group_slug)
+            );
+            wp_cache_set($cache_key, $count, '', 3600);
         }
 
-        return $max_count;
+        return $count;
     }
 
     /**
@@ -103,9 +105,10 @@ class User_Tour_Guide_Query {
      * @return   string    Success message.
      */
     public function insert_steps_to_db($step_title, $step_content, $step_target, $step_order, $tour_name) {
-        global $wpdb;
-        if ($wpdb->get_var("SHOW TABLES LIKE '{$this->table_name}'") != $this->table_name) {
-            $this->create_table();
+        $cache_key = 'check_table_exit';
+        $check_table_exit = wp_cache_get($cache_key);
+        if(false === $check_table_exit){
+            $this->create_table(); 
         }
         $this->add_step($step_title, $step_content, $step_target, $step_order, $tour_name);
         return 'success';
@@ -133,6 +136,7 @@ class User_Tour_Guide_Query {
                 'group'   => $tour_name
             )
         );
+        $this->clean_all_cache($tour_name);
     }
 
     /**
@@ -154,6 +158,8 @@ class User_Tour_Guide_Query {
         ) $charset_collate;";
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
         dbDelta($sql);
+        $cache_key = 'check_table_exit';
+        wp_cache_set($cache_key, true, '', 7200);
     }
 
     /**
@@ -199,6 +205,22 @@ class User_Tour_Guide_Query {
     
         return 'deleted';
     }
+
+    /**
+     * Clean all wp cache for db when step updated.
+     *
+     * @since    1.0.0
+     * @param    string    $group_slug of the step in the database.
+     * @return   string    Success message.
+     */
+
+     public function clean_all_cache($group_slug = 'user-tour-guide'){
+        $count_cache_key = 'count' . $group_slug;
+        $tour_data_cache_key = 'utg_tour_data_' . $group_slug;
+        wp_cache_delete($count_cache_key, '');
+        wp_cache_delete($tour_data_cache_key, '');
+        wp_cache_delete('all_tour_step', '');
+     }
     
 }
 ?>

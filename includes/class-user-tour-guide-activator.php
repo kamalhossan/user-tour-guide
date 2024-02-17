@@ -36,26 +36,29 @@ class User_Tour_Guide_Activator {
 
 		$table_name = $wpdb->prefix . 'utg_user_tour_guide'; // Replace 'your_table_name' with the desired table name
 	
-		// Check if the table already exists
-		if ($wpdb->get_var("SHOW TABLES LIKE %s", $table_name) != $table_name) {
-			// Table does not exist, so create it
-	
-			$charset_collate = $wpdb->get_charset_collate();
-	
-			$sql = "CREATE TABLE {$wpdb->prefix}utg_user_tour_guide (
-				id MEDIUMINT(9) NOT NULL AUTO_INCREMENT,
-				`title` VARCHAR(100) NULL,
-				`content` VARCHAR(500) NULL,
-				`target` VARCHAR(100) NULL,
-				`order` VARCHAR(50) NULL,
-				`group` VARCHAR(50) NULL,
-				PRIMARY KEY (id)
-			) $charset_collate;";
-	
-			require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-			dbDelta($sql);
+		$cache_key = 'check_table_exit';
+        $check_table_exit = wp_cache_get($cache_key);
 
-		}
+		if(false === $check_table_exit){
+			// Check if the table already exists
+			if ($wpdb->get_var("SHOW TABLES LIKE %s", $table_name) != $table_name) {
+				// Table does not exist, so create it
+				$charset_collate = $wpdb->get_charset_collate();
+				$sql = "CREATE TABLE {$wpdb->prefix}utg_user_tour_guide (
+					id MEDIUMINT(9) NOT NULL AUTO_INCREMENT,
+					`title` VARCHAR(100) NULL,
+					`content` VARCHAR(500) NULL,
+					`target` VARCHAR(100) NULL,
+					`order` VARCHAR(50) NULL,
+					`group` VARCHAR(50) NULL,
+					PRIMARY KEY (id)
+				) $charset_collate;";
+		
+				require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+				dbDelta($sql);
+				wp_cache_set($cache_key, true, '', 7200);
+			}
+		}		
 	}
 
 }

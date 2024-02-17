@@ -173,13 +173,19 @@ class User_Tour_Guide_Public {
 
 		check_ajax_referer('utg_public_nonce', 'nonce');
 
-		global $wpdb;
+		$all_tour_step = wp_cache_get('all_tour_step');
 
-		$table_name = $wpdb->prefix . $this -> user_tour_guide_db_name;
-		$results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}utg_user_tour_guide", ARRAY_A);
-
-		header('Content-Type: application/json');
-		echo wp_json_encode($results);
+		if(false === $all_tour_step){
+			global $wpdb;
+			$results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}utg_user_tour_guide", ARRAY_A);
+			wp_cache_set($cache_key, $results, '', 7200);
+			header('Content-Type: application/json');
+			echo wp_json_encode($results);
+		} else {
+			header('Content-Type: application/json');
+			echo wp_json_encode($all_tour_step);
+		}
+		
 		die();
 	}
 
