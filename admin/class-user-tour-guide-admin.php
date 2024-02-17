@@ -127,7 +127,7 @@ class User_Tour_Guide_Admin {
 		 * class.
 		 */
 
-		add_menu_page( 'User Tour Guide', 'User Tour Guide', 'manage_options', 'user_tour_guide', array( $this, 'user_tour_guide_settings_page_callback' ), 'dashicons-admin-plugins', 99 );
+		add_menu_page( 'User Tour Guide', 'User Tour Guide', 'manage_options', 'user_tour_guide', array( $this, 'user_tour_guide_settings_page_callback' ), 'dashicons-schedule', 99 );
 
 		add_submenu_page(
 			'user_tour_guide', // Parent slug
@@ -152,6 +152,16 @@ class User_Tour_Guide_Admin {
 		register_setting( 'user_tour_guide_options', 'show_begin_tour', array(
 			'type' => 'string', // Data type (string, boolean, integer, etc.)
 			'default' => '0', // Set your default value here
+			)
+		);
+		register_setting( 'user_tour_guide_options', 'show_dots', array(
+			'type' => 'string', // Data type (string, boolean, integer, etc.)
+			'default' => '1', // Set your default value here
+			)
+		);
+		register_setting( 'user_tour_guide_options', 'show_close_button', array(
+			'type' => 'string', // Data type (string, boolean, integer, etc.)
+			'default' => '1', // Set your default value here
 			)
 		);
 	}
@@ -186,7 +196,14 @@ class User_Tour_Guide_Admin {
 						<td class="checkbox"><input type="checkbox" name="show_begin_tour" value="1" <?php checked( get_option( 'show_begin_tour' ), 1 ); ?> /></td>
 						<td scope="row">Show Begin Tour Button</td>
 					</tr>
-
+					<tr valign="top">
+						<td class="checkbox"><input type="checkbox" name="show_dots" value="1" <?php checked( get_option( 'show_dots' ), 1 ); ?> /></td>
+						<td scope="row">Show Dots</td>
+					</tr>
+					<tr valign="top">
+						<td class="checkbox"><input type="checkbox" name="show_close_button" value="1" <?php checked( get_option( 'show_close_button' ), 1 ); ?> /></td>
+						<td scope="row">Show Close Button</td>
+					</tr>
 				</table>
 				<?php submit_button(); ?>
 			</form>

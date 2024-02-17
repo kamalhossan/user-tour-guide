@@ -154,6 +154,14 @@ class User_Tour_Guide_Public {
 		}else {
 			$complete = false;
 		}
+		$settings = array(
+			'closeButton' => (get_option('show_close_button')) ? true :  false,
+			'showStepDots' => (get_option('show_dots')) ? true :  false,
+			'hidePrev' => false,
+			'hideNext' => false,
+			'nextLabel' => 'custom',
+			'prevLabel' => 'custom back',
+		);
 
 		wp_enqueue_style( 'intro-style', plugin_dir_url(__FILE__) . 'css/tour.min.css', array(), $this->version, 'all' );
 		wp_enqueue_style( 'user-tour-guide-style', plugin_dir_url(__FILE__) . 'css/user-tour-guide-public.css', array(), $this->version, 'all' );
@@ -164,6 +172,7 @@ class User_Tour_Guide_Public {
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
 			'nonce' => wp_create_nonce( 'utg_public_nonce' ),
 			'complete' => $complete,
+			'setting' => $settings
 			)
 		);
 		return ob_get_clean();
@@ -175,17 +184,19 @@ class User_Tour_Guide_Public {
 
 		$all_tour_step = wp_cache_get('all_tour_step');
 
-		header('Content-Type: application/json');
-		if(false === $all_tour_step){
+		if (false === $all_tour_step) {
 			global $wpdb;
 			$results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}utg_user_tour_guide", ARRAY_A);
-			wp_cache_set($cache_key, $results, '', 7200);			
+			wp_cache_set('all_tour_step', $results, '', 7200);
+			header('Content-Type: application/json');
 			echo wp_json_encode($results);
+			die();
 		} else {
+			header('Content-Type: application/json');
 			echo wp_json_encode($all_tour_step);
+			die();
 		}
-		
-		die();
+
 	}
 
 	public function utg_change_user_meta(){

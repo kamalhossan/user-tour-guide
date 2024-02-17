@@ -33,9 +33,13 @@
 
 		
 		const publicTour = new tourguide.TourGuideClient({
+			autoScroll: true,
 			showStepProgress: false,
-			showStepDots: false,
 			exitOnClickOutside: false,
+			closeButton: false,
+			showStepDots: false,
+			hideNext: false,
+			hidePrev: false
 		});
 
 		$.ajax({
@@ -46,16 +50,17 @@
 				nonce: utg_public_object.nonce,
 			},
 			success: function (response) {
-				console.log(response);
+				const settings  = utg_public_object.setting;
+				publicTour.setOptions(settings)
 				if (response.length === 0) {
 					$('.utg-tour-start').text('No tour found');
 					$('.utg-tour-start').attr('disabled', 'disabled');
-				} else if (response) {
+				} else if (response.length > 0) {
 					const tourID = $('.utg-tour-start').attr('id');
+					publicTour.addSteps(response);
 					let tourFound = false
 					response.forEach((e) => {
 						if (tourID == e.group) {
-							publicTour.addSteps(response);
 							tourFound = true;
 							return;
 						}
