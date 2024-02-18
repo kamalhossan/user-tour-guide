@@ -20,8 +20,7 @@ if(!$check_meta){
             </div>
             <div class="modal-body text-center">
                 <p class="px-3 fs-5">
-                    🌟 Welcome to our exclusive offer! 🌟
-                    🔥 This verion included Only 2 tours - ready for more? Upgrade now! 🔥
+                    🔥 This verion included Only 2 tours - ready for more? Contact now! 🔥
                 </p>
             </div>
             <div class="modal-footer">
