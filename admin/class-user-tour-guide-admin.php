@@ -164,6 +164,36 @@ class User_Tour_Guide_Admin {
 			'default' => '1', // Set your default value here
 			)
 		);
+		register_setting( 'user_tour_guide_options', 'show_prev_button', array(
+			'type' => 'string', // Data type (string, boolean, integer, etc.)
+			'default' => '1', // Set your default value here
+			)
+		);
+		register_setting( 'user_tour_guide_options', 'show_next_button', array(
+			'type' => 'string', // Data type (string, boolean, integer, etc.)
+			'default' => '1', // Set your default value here
+			)
+		);
+		register_setting( 'user_tour_guide_options', 'show_step_progress', array(
+			'type' => 'string', // Data type (string, boolean, integer, etc.)
+			'default' => '1', // Set your default value here
+			)
+		);
+		register_setting( 'user_tour_guide_options', 'enable_keyboard_control', array(
+			'type' => 'string', // Data type (string, boolean, integer, etc.)
+			'default' => '1', // Set your default value here
+			)
+		);
+		register_setting( 'user_tour_guide_options', 'exit_on_escape', array(
+			'type' => 'string', // Data type (string, boolean, integer, etc.)
+			'default' => '1', // Set your default value here
+			)
+		);
+		register_setting( 'user_tour_guide_options', 'exit_on_click_outside', array(
+			'type' => 'string', // Data type (string, boolean, integer, etc.)
+			'default' => '0', // Set your default value here
+			)
+		);
 	}
 
 	public function user_tour_guide_options_page() {
@@ -203,6 +233,30 @@ class User_Tour_Guide_Admin {
 					<tr valign="top">
 						<td class="checkbox"><input type="checkbox" name="show_close_button" value="1" <?php checked( get_option( 'show_close_button' ), 1 ); ?> /></td>
 						<td scope="row">Show Close Button</td>
+					</tr>
+					<tr valign="top">
+						<td class="checkbox"><input type="checkbox" name="show_prev_button" value="1" <?php checked( get_option( 'show_prev_button' ), 1 ); ?> /></td>
+						<td scope="row">Show Previous Button</td>
+					</tr>
+					<tr valign="top">
+						<td class="checkbox"><input type="checkbox" name="show_next_button" value="1" <?php checked( get_option( 'show_next_button' ), 1 ); ?> /></td>
+						<td scope="row">Show Next Button</td>
+					</tr>
+					<tr valign="top">
+						<td class="checkbox"><input type="checkbox" name="show_step_progress" value="1" <?php checked( get_option( 'show_step_progress' ), 1 ); ?> /></td>
+						<td scope="row">Show Step Progress</td>
+					</tr>
+					<tr valign="top">
+						<td class="checkbox"><input type="checkbox" name="enable_keyboard_control" value="1" <?php checked( get_option( 'enable_keyboard_control' ), 1 ); ?> /></td>
+						<td scope="row">Enable Keyboard Control</td>
+					</tr>
+					<tr valign="top">
+						<td class="checkbox"><input type="checkbox" name="exit_on_escape" value="1" <?php checked( get_option( 'exit_on_escape' ), 1 ); ?> /></td>
+						<td scope="row">Exit On Escape</td>
+					</tr>
+					<tr valign="top">
+						<td class="checkbox"><input type="checkbox" name="exit_on_click_outside" value="1" <?php checked( get_option( 'exit_on_click_outside' ), 1 ); ?> /></td>
+						<td scope="row">Exit On Click Outside</td>
 					</tr>
 				</table>
 				<?php submit_button(); ?>

@@ -43,13 +43,17 @@
 	
 		<?php
 
+		if(count($groups) !== 1){
 			if(!isset($_SESSION['active-tab'])){
 				$_SESSION['active-tab'] = 'user-tour-guide';
 				$active_tab = $_SESSION['active-tab'];
 			} else {
 				$active_tab = $_SESSION['active-tab'];
 			}
-	
+		} else {
+			$active_tab = 'user-tour-guide';
+		}
+
 			foreach ($groups as $group){
 				$group_slug = $group['group'];
 				$group_name = ucwords(str_replace('-', ' ', $group_slug));

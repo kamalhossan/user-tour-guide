@@ -157,10 +157,14 @@ class User_Tour_Guide_Public {
 		$settings = array(
 			'closeButton' => (get_option('show_close_button')) ? true :  false,
 			'showStepDots' => (get_option('show_dots')) ? true :  false,
-			'hidePrev' => false,
-			'hideNext' => false,
-			'nextLabel' => 'custom',
-			'prevLabel' => 'custom back',
+			'hidePrev' => (get_option('show_prev_button')) ? false : true,
+			'hideNext' => (get_option('show_next_button')) ? false : true,
+			'showStepProgress' => (get_option('show_step_progress')) ? true : false,
+			'keyboardControls' => (get_option('enable_keyboard_control')) ? true : false,
+			'exitOnEscape' => (get_option('exit_on_escape')) ? true : false,
+			'exitOnClickOutside' => (get_option('exit_on_click_outside')) ? true : false,
+			'nextLabel' => 'Next',
+			'prevLabel' => 'Back',
 		);
 
 		wp_enqueue_style( 'intro-style', plugin_dir_url(__FILE__) . 'css/tour.min.css', array(), $this->version, 'all' );
