@@ -46,3 +46,7 @@ td.edit_step button {
    background: #92bcfb40;
    color: #fff;
 }
+a.btn.btn-secondary.text-black {
+   color: #000 !important;
+   border: 1px solid;
+}

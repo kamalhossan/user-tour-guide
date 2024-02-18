@@ -110,8 +110,14 @@ class User_Tour_Guide_Query {
         if(false === $check_table_exit){
             $this->create_table(); 
         }
-        $this->add_step($step_title, $step_content, $step_target, $step_order, $tour_name);
-        return 'success';
+        $groups_count = $this -> get_groups();
+        if(count($groups_count) < 3){
+            $this->add_step($step_title, $step_content, $step_target, $step_order, $tour_name);
+            return 'success';
+        } else {
+            return 'error';
+        }
+
     }
 
     /**

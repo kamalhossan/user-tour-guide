@@ -1,7 +1,7 @@
 === User Tour Guide ===
 Contributors: kamalhossan
 Tags: onboarding, walkthrough, user onboarding, user guide, documentation
-Donate link: https://www.buymeacoffee.com/usertourguide
+Donate link: https://www.buymeacoffee.com/kamalhossan
 Requires PHP: 5.6
 Requires at least: 3.0.1
 Tested up to: 3.4

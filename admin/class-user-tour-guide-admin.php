@@ -169,7 +169,7 @@ class User_Tour_Guide_Admin {
 	public function user_tour_guide_options_page() {
 		?>
 		<div class="wrap">
-			<h2>User Tour Guide Options</h2>
+			<h2>User Tour Guide Options Global</h2>
 			<form method="post" action="options.php">
 				<?php settings_fields( 'user_tour_guide_options' ); ?>
 				<?php do_settings_sections( 'user_tour_guide_options' ); ?>
@@ -211,89 +211,19 @@ class User_Tour_Guide_Admin {
 		<?php
 	}
 
+	/**
+	 * Register the display page for user tour guide plugin.
+	 *
+	 * @since    1.0.0
+	 */
+
 	public function user_tour_guide_settings_page_callback(){
-		
-	if ( ! current_user_can( 'manage_options' ) ) {
-		return;
-	}
-	$utg_query = new User_Tour_Guide_Query();
-	$groups =  $utg_query->get_groups();
-
-	
-	?>
-	<div class="wrap">
-		<div class="d-flex justify-content-between align-items-center">
-			<h2><?php esc_html_e( 'User Tour Guide Options', 'user-tour-guide' ); ?></h2>	
-			<div class="action">
-				<button id="utg_sample" class="btn btn-primary">Begin Sample Tour</button>
-				<?php
-				if($groups && count($groups) > 0){
-					?>
-					<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#new-tour" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Step" id="<?php echo 'edit-';?>">+ Create a new Tour</button>
-					<?php
-				}
-				?>
-			</div>
-		</div>
-	
-		<?php
-
-		?>
-		<!-- Nav tabs -->
-		<ul class="nav nav-tabs" id="myTab" role="tablist">
-	
-		<?php
-
-			if(!isset($_SESSION['active-tab'])){
-				$_SESSION['active-tab'] = 'user-tour-guide';
-				$active_tab = $_SESSION['active-tab'];
-			} else {
-				$active_tab = $_SESSION['active-tab'];
-			}
-	
-			foreach ($groups as $group){
-				$group_slug = $group['group'];
-				$group_name = ucwords(str_replace('-', ' ', $group_slug));
-				?>
-				<li class="nav-item" role="presentation">
-					<button class="nav-link <?php echo ($active_tab == $group_slug) ? 'active': '';?>" id="<?php echo esc_html($group_slug) . '-tab'?>" data-bs-toggle="tab" data-bs-target="<?php echo '#'. esc_html($group_slug);?>"
-					type="button" role="tab" aria-controls="home" aria-selected="true"><?php echo esc_html($group_name);?></button>
-				</li>
-				<?php
-			}
-		?>
-		</ul>
-
-		<!-- Tab panes -->
-		<div class="tab-content">
-		<?php
-
-			foreach ($groups as $group){
-				$group_slug = $group['group'];
-				$group_name = str_replace('-', ' ', $group_slug);
-				?>
-				<div class="tab-pane <?php echo ($active_tab == $group_slug) ? 'active': '';?>" id="<?php echo esc_html($group_slug)?>" role="tabpanel" aria-labelledby="<?php echo esc_html($group_slug) . '-tab'?>">
-					<?php $this -> render_tour_guide_add_response_form($group_slug); ?>
-					<?php $this -> render_tour_guide_response_table($group_slug); ?>
-				</div>
-			<?php }
-		?>
-		</div>
-		<?php
-
-		if(empty($groups)){
-			// include blank from
-			include_once plugin_dir_path( __FILE__ ) . 'partials/user-tour-guide-admin-display.php';
+			
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
 		}
 
-		include_once plugin_dir_path( __FILE__ ) . 'partials/new-tour.php';
-		include_once plugin_dir_path( __FILE__ ) . 'partials/admin-modal.php';
-		
-		?>
-		
-	</div> 
-	
-	<?php
+		include_once plugin_dir_path( __FILE__ ) . 'partials/user-tour-guide-admin-display.php';
 	}
 
 	/**
@@ -336,24 +266,15 @@ class User_Tour_Guide_Admin {
 
 	}
 
-	// public function utg_get_tour_data_from_db(){
-
-	// 	/**
-	// 	 * getting all the steps from db for showing this on fronted
-	// 	 */
-
-	// 	global $wpdb;
-
-	// 	$table_name = $wpdb->prefix . $this-> user_tour_guide_db_name;
-	// 	$results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}", $this -> user_tour_guide_db_name, ARRAY_A);
-
-	// 	header('Content-Type: application/json');
-	// 	$steps = wp_json_encode($results);
-
-	// 	echo esc_js($steps);
-
-	// 	die();
-	// }
+	/**
+	 * This function is for adding step to the database
+	 * @since 1.0.0
+	 * @param $step_title
+	 * @param $step_content
+	 * @param $step_target
+	 * @param $step_order
+	 * @param $tour_name
+	 * */
 
 	public function utg_add_steps_to_db(){
 
@@ -373,6 +294,16 @@ class User_Tour_Guide_Admin {
 
 		die();
 	}
+
+	/**
+	 * This function is for edit step to the database
+	 * @since 1.0.0
+	 * @param $db_id
+	 * @param $step_content
+	 * @param $step_target
+	 * @param $step_order
+	 * @param $step_title
+	 * */
 
 
 	public function utg_edit_steps_to_db(){
@@ -394,6 +325,13 @@ class User_Tour_Guide_Admin {
 		
 	}
 
+	/**
+	 * This function is for delete step to the database
+	 * @since 1.0.0
+	 * @param $db_id
+	 * 
+	 * */
+
 	public function utg_remove_steps_from_db(){
 
 		check_ajax_referer( 'utg_admin_nonce', 'nonce' );
@@ -409,6 +347,13 @@ class User_Tour_Guide_Admin {
 		
 	}
 
+	/**
+	 * This function is for adding support menu to the plugin page
+	 * @since 1.0.0
+	 * @param array($links)
+	 * 
+	 * */
+
 	public function utg_add_settings_link_to_plugin_list(array $links){
 		// Add a new settings link
 		$url = get_admin_url() . 'admin.php?page=user_tour_guide';
@@ -419,6 +364,12 @@ class User_Tour_Guide_Admin {
 		return $links;
 	}
 
+	/**
+	 * This function is for handle tour meta for admin
+	 * @since 1.0.0
+	 * 
+	 * */
+
 	public function utg_admin_tour_skip(){
 
 		check_ajax_referer( 'utg_admin_nonce', 'nonce' );
@@ -428,6 +379,12 @@ class User_Tour_Guide_Admin {
 		echo esc_js(true);
 		die();
 	}
+
+	/**
+	 * This function is for handle to add new step to db
+	 * @since 1.0.0
+	 * @param $group_slug/ tour_name
+	 * */
 
 	public function render_tour_guide_add_response_form($group_slug = 'user-tour-guide'){
 		
@@ -485,6 +442,11 @@ class User_Tour_Guide_Admin {
 				<div class="border border-1 rounded-2 shadow-sm p-3 mt-3 tour-response">
 					<div class="d-flex align-items-center justify-content-lg-between">
 						<h4>Details</h4>
+						<?php
+							if($group_slug == 'user-tour-guide'){
+								echo '<button id="utg_sample" class="btn btn-primary">Begin Sample Tour</button>';
+							}
+						?>
 					</div>
 					<div class="details">
 						<h6>Create User Tour</h6>
@@ -497,6 +459,12 @@ class User_Tour_Guide_Admin {
 		</div>
 		<?php
 	}
+
+	/**
+	 * This function is for handle to display response from database
+	 * @since 1.0.0
+	 * @param $group_slug/ tour_name
+	 * */
 
 	public function render_tour_guide_response_table($group_slug = 'user-tour-guide'){
 
