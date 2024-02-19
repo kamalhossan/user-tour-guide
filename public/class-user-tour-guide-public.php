@@ -176,7 +176,7 @@ class User_Tour_Guide_Public {
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
 			'nonce' => wp_create_nonce( 'utg_public_nonce' ),
 			'complete' => $complete,
-			'setting' => $settings
+			'setting' => $settings,
 			)
 		);
 		return ob_get_clean();
