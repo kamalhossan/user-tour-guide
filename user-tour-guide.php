@@ -15,7 +15,7 @@
  * @wordpress-plugin
  * Plugin Name:       User Tour Guide
  * Plugin URI:        https://wordpress.org/plugins/user-tour-guide/
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Description:       A simple lightweight onboarding user tour guide plugin for WordPress. Create an unlimited number of onboarding tours for unlimited pages. Work with any page builder, such as Divi, Elementor, Oxygen, Gurenburg etc.
  * Version:           1.0.0
  * Author:            Kamal Hossan
  * Author URI:        https://kamalhossan.github.io/
@@ -38,7 +38,7 @@ define( 'USER_TOUR_GUIDE_PLUGIN_FILE', __FILE__ );
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-// define( 'USER_TOUR_GUIDE_VERSION', '1.0.0' );
+define( 'USER_TOUR_GUIDE_VERSION', '1.0.0' );
 
 /**
  * The code that runs during plugin activation.
