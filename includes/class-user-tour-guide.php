@@ -27,6 +27,8 @@
  * @subpackage User_Tour_Guide/includes
  * @author     Kamal Hossan <kamal.hossan35@gmail.com>
  */
+
+if ( ! defined( 'ABSPATH' ) ) exit; 
 class User_Tour_Guide {
 
 	/**
@@ -168,32 +170,32 @@ class User_Tour_Guide {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
 		//Register menu page
-		$this->loader->add_action( 'admin_menu', $plugin_admin, 'user_tour_guide_settings_page' );
-		$this->loader->add_action( 'init', $plugin_admin, 'registering_session_for_tabs' );
+		$this->loader->add_action( 'admin_menu', $plugin_admin, 'utgk_user_tour_guide_settings_page' );
+		$this->loader->add_action( 'init', $plugin_admin, 'utgk_registering_session_for_tabs' );
 
 		//Register settings
 		// $this->loader->add_action( 'admin_menu', $plugin_admin, 'utg_add_settings_page');
-		$this->loader->add_action( 'admin_init', $plugin_admin, 'user_tour_guide_register_settings');
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'utgk_user_tour_guide_register_settings');
 
 		// Filter hooks
 		$this->loader->add_filter(
 			'plugin_action_links_' . plugin_basename(USER_TOUR_GUIDE_PLUGIN_FILE), $plugin_admin, 
-			'utg_add_settings_link_to_plugin_list',
+			'utgk_add_settings_link_to_plugin_list',
 		);
 
 		// Ajax Actions
 		$this->loader->add_action( 'wp_ajax_utg_get_tour_data_from_db', $plugin_admin, 'utg_get_tour_data_from_db' );
 		$this->loader->add_action( 'wp_ajax_nopriv_utg_get_tour_data_from_db', $plugin_admin, 'utg_get_tour_data_from_db' );
-		$this->loader->add_action( 'wp_ajax_utg_add_steps_to_db', $plugin_admin, 'utg_add_steps_to_db' );
-		$this->loader->add_action( 'wp_ajax_nopriv_utg_add_steps_to_db', $plugin_admin, 'utg_add_steps_to_db' );
-		$this->loader->add_action( 'wp_ajax_utg_edit_steps_to_db', $plugin_admin, 'utg_edit_steps_to_db' );
-		$this->loader->add_action( 'wp_ajax_nopriv_utg_edit_steps_to_db', $plugin_admin, 'utg_edit_steps_to_db' );
-		$this->loader->add_action( 'wp_ajax_utg_remove_steps_from_db', $plugin_admin, 'utg_remove_steps_from_db' );
-		$this->loader->add_action( 'wp_ajax_nopriv_utg_remove_steps_from_db', $plugin_admin, 'utg_remove_steps_from_db' );
-		$this->loader->add_action( 'wp_ajax_utg_admin_tour_skip', $plugin_admin, 'utg_admin_tour_skip' );
-		$this->loader->add_action( 'wp_ajax_nopriv_utg_admin_tour_skip', $plugin_admin, 'utg_admin_tour_skip' );
-		$this->loader->add_action( 'wp_ajax_save_active_tab', $plugin_admin, 'save_active_tab_with_session' );
-		$this->loader->add_action( 'wp_ajax_nopriv_save_active_tab', $plugin_admin, 'save_active_tab_with_session' );
+		$this->loader->add_action( 'wp_ajax_utg_add_steps_to_db', $plugin_admin, 'utgk_add_steps_to_db' );
+		$this->loader->add_action( 'wp_ajax_nopriv_utg_add_steps_to_db', $plugin_admin, 'utgk_add_steps_to_db' );
+		$this->loader->add_action( 'wp_ajax_utg_edit_steps_to_db', $plugin_admin, 'utgk_edit_steps_to_db' );
+		$this->loader->add_action( 'wp_ajax_nopriv_utg_edit_steps_to_db', $plugin_admin, 'utgk_edit_steps_to_db' );
+		$this->loader->add_action( 'wp_ajax_utg_remove_steps_from_db', $plugin_admin, 'utgk_remove_steps_from_db' );
+		$this->loader->add_action( 'wp_ajax_nopriv_utg_remove_steps_from_db', $plugin_admin, 'utgk_remove_steps_from_db' );
+		$this->loader->add_action( 'wp_ajax_utg_admin_tour_skip', $plugin_admin, 'utgk_admin_tour_skip' );
+		$this->loader->add_action( 'wp_ajax_nopriv_utg_admin_tour_skip', $plugin_admin, 'utgk_admin_tour_skip' );
+		$this->loader->add_action( 'wp_ajax_save_active_tab', $plugin_admin, 'utgk_save_active_tab_with_session' );
+		$this->loader->add_action( 'wp_ajax_nopriv_save_active_tab', $plugin_admin, 'utgk_save_active_tab_with_session' );
 
 	}
 

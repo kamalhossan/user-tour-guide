@@ -21,6 +21,7 @@
  * @subpackage User_Tour_Guide/includes
  * @author     Kamal Hossan <kamal.hossan35@gmail.com>
  */
+if ( ! defined( 'ABSPATH' ) ) exit; 
 class User_Tour_Guide_Loader {
 
 	/**

@@ -9,6 +9,8 @@
  * @package    User_Tour_Guide
  * @subpackage User_Tour_Guide/admin
  */
+
+if ( ! defined( 'ABSPATH' ) ) exit; 
 class User_Tour_Guide_Query {
 
     /**

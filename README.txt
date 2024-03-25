@@ -4,7 +4,7 @@ Tags: onboarding, walkthrough, user onboarding, user guide, documentation
 Donate link: https://www.buymeacoffee.com/kamalhossan
 Requires PHP: 7.4
 Requires at least: 3.0.1
-Tested up to: 6.4
+Tested up to: 6.4.3
 Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -16,7 +16,7 @@ A simple lightweight onboarding user tour guide plugin for WordPress. Create an 
 
 == Description ==
 
-User Tour Guide is a user-friendly, multi-step tour guide plugin designed for WordPress users. With this plugin, you can easily create onboarding user guide tours, enabling you to provide an interactive experience for your website visitors. User Tour Guide offers the flexibility to create an unlimited number of tour steps and tours for all pages of your website. Incorporating interactive user walkthroughs is a powerful strategy to enhance user experience and customer satisfaction.
+User Tour Guide is a user-friendly, multi-step tour guide plugin designed for WordPress users. With this plugin, you can easily create onboarding user guide tours, enabling you to provide an interactive experience for your website visitors. User Tour Guide offers the flexibility to create an unlimited number of tour steps and tours for all pages of your website. Incorporating interactive user walkthroughs is a powerful strategy to enhance user experience and customer satisfaction. Made with TourGuide Js
 
 Support all the themes including popular theme (Elementor, Divi). Just follow simple step to Integrate with any page you have on your website.
 
@@ -71,3 +71,8 @@ Create tour:
 2. add as much step you want to show 
 3. place the shortcode
 4. Tour guide is ready
+
+== Useful Links ==
+
+* [Github](https://github.com/kamalhossan/user-tour-guide)
+* [Get Help from Author](mailto:kamal.hossan35@gmail.com)

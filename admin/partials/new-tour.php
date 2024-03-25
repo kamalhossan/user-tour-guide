@@ -2,9 +2,7 @@
 /**
  * Exit if accessed directly
  */
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+if ( ! defined( 'ABSPATH' ) ) exit; 
 ?>
 <div class="modal fade" id="new-tour" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg" role="document">

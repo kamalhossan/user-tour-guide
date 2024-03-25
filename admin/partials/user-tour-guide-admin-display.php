@@ -11,6 +11,8 @@
  * @package    User_Tour_Guide
  * @subpackage User_Tour_Guide/admin/partials
  */
+
+if ( ! defined( 'ABSPATH' ) ) exit; 
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
@@ -46,9 +48,9 @@
 		if(count($groups) !== 1){
 			if(!isset($_SESSION['active-tab'])){
 				$_SESSION['active-tab'] = 'user-tour-guide';
-				$active_tab = $_SESSION['active-tab'];
+				$active_tab = sanitize_text_field($_SESSION['active-tab']);
 			} else {
-				$active_tab = $_SESSION['active-tab'];
+				$active_tab = sanitize_text_field($_SESSION['active-tab']);
 			}
 		} else {
 			$active_tab = 'user-tour-guide';
@@ -76,8 +78,8 @@
 				$group_name = str_replace('-', ' ', $group_slug);
 				?>
 				<div class="tab-pane <?php echo ($active_tab == $group_slug) ? 'active': '';?>" id="<?php echo esc_html($group_slug)?>" role="tabpanel" aria-labelledby="<?php echo esc_html($group_slug) . '-tab'?>">
-					<?php $this -> render_tour_guide_add_response_form($group_slug); ?>
-					<?php $this -> render_tour_guide_response_table($group_slug); ?>
+					<?php $this -> utgk_render_tour_guide_add_response_form($group_slug); ?>
+					<?php $this -> utgk_render_tour_guide_response_table($group_slug); ?>
 				</div>
 			<?php }
 		?>

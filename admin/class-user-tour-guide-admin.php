@@ -20,6 +20,7 @@
  * @subpackage User_Tour_Guide/admin
  * @author     Kamal Hossan <kamal.hossan35@gmail.com>
  */
+if ( ! defined( 'ABSPATH' ) ) exit; 
 class User_Tour_Guide_Admin {
 
 	/**
@@ -98,7 +99,7 @@ class User_Tour_Guide_Admin {
 		// Check if user are on my plugin's page
 		if ($current_screen && $current_screen->id === 'toplevel_page_user_tour_guide') {
 			// Enqueue your style  here
-			wp_enqueue_style( 'bootstrap-style', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css', array(), $this->version, 'all' );
+			wp_enqueue_style( 'bootstrap-style', plugin_dir_url( __FILE__ ) . 'css/bootstrap.min.css', array(), $this->version, 'all' );
 			wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/user-tour-guide-admin.css', array(), $this->version, 'all' );
 			wp_enqueue_style( 'tour-css', plugin_dir_url(USER_TOUR_GUIDE_PLUGIN_FILE) . 'public/css/tour.min.css', array(), $this->version, 'all' );
 		}
@@ -113,7 +114,7 @@ class User_Tour_Guide_Admin {
 	 *
 	 * @since    1.0.0
 	 */
-	public function user_tour_guide_settings_page() {
+	public function utgk_user_tour_guide_settings_page() {
 
 		/**
 		 * This function is provided for demonstration purposes only.
@@ -127,7 +128,7 @@ class User_Tour_Guide_Admin {
 		 * class.
 		 */
 
-		add_menu_page( 'User Tour Guide', 'User Tour Guide', 'manage_options', 'user_tour_guide', array( $this, 'user_tour_guide_settings_page_callback' ), 'dashicons-schedule', 99 );
+		add_menu_page( 'User Tour Guide', 'User Tour Guide', 'manage_options', 'user_tour_guide', array( $this, 'utgk_user_tour_guide_settings_page_callback' ), 'dashicons-schedule', 99 );
 
 		add_submenu_page(
 			'user_tour_guide', // Parent slug
@@ -135,13 +136,13 @@ class User_Tour_Guide_Admin {
 			'Settings', // Menu title
 			'manage_options', // Capability
 			'user_tour_guide_settings', // Menu slug
-			array($this, 'user_tour_guide_options_page'), // Callback function
+			array($this, 'utgk_user_tour_guide_options_page'), // Callback function
 		);
 
 
 	}
 
-	public function user_tour_guide_register_settings() {
+	public function utgk_user_tour_guide_register_settings() {
 		// Register a setting for your plugin
 		register_setting( 'user_tour_guide_options', 'utg_tour_option' );
 		register_setting( 'user_tour_guide_options', 'start_immidiately', array(
@@ -196,7 +197,7 @@ class User_Tour_Guide_Admin {
 		);
 	}
 
-	public function user_tour_guide_options_page() {
+	public function utgk_user_tour_guide_options_page() {
 		?>
 		<div class="wrap">
 			<h2>User Tour Guide Options Global</h2>
@@ -271,7 +272,7 @@ class User_Tour_Guide_Admin {
 	 * @since    1.0.0
 	 */
 
-	public function user_tour_guide_settings_page_callback(){
+	public function utgk_user_tour_guide_settings_page_callback(){
 			
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
@@ -305,7 +306,7 @@ class User_Tour_Guide_Admin {
 		// Check if user are on my plugin's page
 		if ($current_screen && $current_screen->id === 'toplevel_page_user_tour_guide') {
 			// Enqueue your script here
-			wp_enqueue_script( 'bootstrap-script', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js', array(), '5.3.2', false );
+			wp_enqueue_script( 'bootstrap-script', plugin_dir_url( __FILE__ ) . 'js/bootstrap.bundle.min.js', array(), '5.3.2', false );
 
 			wp_enqueue_script( 'tour-ks', plugin_dir_url(USER_TOUR_GUIDE_PLUGIN_FILE) . 'public/js/tour.min.js', array(), $this->version, false );
 
@@ -330,7 +331,7 @@ class User_Tour_Guide_Admin {
 	 * @param $tour_name
 	 * */
 
-	public function utg_add_steps_to_db(){
+	public function utgk_add_steps_to_db(){
 
 		check_ajax_referer( 'utg_admin_nonce', 'nonce' );
 
@@ -360,7 +361,7 @@ class User_Tour_Guide_Admin {
 	 * */
 
 
-	public function utg_edit_steps_to_db(){
+	public function utgk_edit_steps_to_db(){
 
 		check_ajax_referer( 'utg_admin_nonce', 'nonce' );
 
@@ -386,7 +387,7 @@ class User_Tour_Guide_Admin {
 	 * 
 	 * */
 
-	public function utg_remove_steps_from_db(){
+	public function utgk_remove_steps_from_db(){
 
 		check_ajax_referer( 'utg_admin_nonce', 'nonce' );
 
@@ -408,7 +409,7 @@ class User_Tour_Guide_Admin {
 	 * 
 	 * */
 
-	public function utg_add_settings_link_to_plugin_list(array $links){
+	public function utgk_add_settings_link_to_plugin_list(array $links){
 		// Add a new settings link
 		$url = get_admin_url() . 'admin.php?page=user_tour_guide';
 		$settings_link = '<a href="' . esc_url( $url ) . '">' . __( 'Settings', 'user-tour-guide' ) . '</a>';
@@ -424,7 +425,7 @@ class User_Tour_Guide_Admin {
 	 * 
 	 * */
 
-	public function utg_admin_tour_skip(){
+	public function utgk_admin_tour_skip(){
 
 		check_ajax_referer( 'utg_admin_nonce', 'nonce' );
 
@@ -440,7 +441,7 @@ class User_Tour_Guide_Admin {
 	 * @param $group_slug/ tour_name
 	 * */
 
-	public function render_tour_guide_add_response_form($group_slug = 'user-tour-guide'){
+	public function utgk_render_tour_guide_add_response_form($group_slug = 'user-tour-guide'){
 		
 		$group_name = ucwords(str_replace('-', ' ', $group_slug));
 		$utg_query = new User_Tour_Guide_Query();
@@ -520,7 +521,7 @@ class User_Tour_Guide_Admin {
 	 * @param $group_slug/ tour_name
 	 * */
 
-	public function render_tour_guide_response_table($group_slug = 'user-tour-guide'){
+	public function utgk_render_tour_guide_response_table($group_slug = 'user-tour-guide'){
 
 		$utg_query = new User_Tour_Guide_Query();
 		$results = $utg_query->get_tour_data_by_group_slug($group_slug);
@@ -669,13 +670,13 @@ class User_Tour_Guide_Admin {
 		<?php
 	}
 
-	public function registering_session_for_tabs(){
+	public function utgk_registering_session_for_tabs(){
 		if (!session_id()) {
 			session_start();
 		}
 	}
 
-	public function save_active_tab_with_session(){
+	public function utgk_save_active_tab_with_session(){
 
 		check_ajax_referer( 'utg_admin_nonce', 'nonce' );
 

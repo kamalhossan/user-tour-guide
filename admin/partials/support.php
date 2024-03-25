@@ -1,4 +1,6 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) exit; 
 $user_id = get_current_user_id();
 $check_meta = get_user_meta( $user_id , 'utg_admin_tour', true );
 

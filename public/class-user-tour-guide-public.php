@@ -20,6 +20,8 @@
  * @subpackage User_Tour_Guide/public
  * @author     Kamal Hossan <kamal.hossan35@gmail.com>
  */
+
+if ( ! defined( 'ABSPATH' ) ) exit;
 class User_Tour_Guide_Public {
 
 	/**
@@ -64,7 +66,7 @@ class User_Tour_Guide_Public {
 		$this->user_tour_guide_db_name = $db_name;
 
 		//register shortcode
-		add_shortcode( 'utg-user-tour-guide', array( $this, 'utg_user_tour_guide_callback' ) );
+		add_shortcode( 'utg-user-tour-guide', array( $this, 'utgk_user_tour_guide_callback' ) );
 
 	}
 
@@ -117,7 +119,7 @@ class User_Tour_Guide_Public {
 
 	}
 
-	public function utg_user_tour_guide_callback($atts){
+	public function utgk_user_tour_guide_callback($atts){
 
 		$atts = shortcode_atts( array(
 			'tour' => 'user-tour-guide',
@@ -182,7 +184,7 @@ class User_Tour_Guide_Public {
 		return ob_get_clean();
 	}
 
-	public function utg_get_user_tour_data_from_db(){
+	public function utgk_get_user_tour_data_from_db(){
 
 		check_ajax_referer('utg_public_nonce', 'nonce');
 
@@ -203,7 +205,7 @@ class User_Tour_Guide_Public {
 
 	}
 
-	public function utg_change_user_meta(){
+	public function utgk_change_user_meta(){
 
 		check_ajax_referer('utg_public_nonce', 'nonce');
 

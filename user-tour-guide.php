@@ -15,20 +15,18 @@
  * @wordpress-plugin
  * Plugin Name:       User Tour Guide
  * Plugin URI:        https://wordpress.org/plugins/user-tour-guide/
- * Description:       A simple lightweight onboarding user tour guide plugin for WordPress. Create an unlimited number of onboarding tours for unlimited pages. Work with any page builder, such as Divi, Elementor, Oxygen, Gurenburg etc.
+ * Description:       A simple lightweight onboarding user tour guide plugin for WordPress. Create an unlimited number of onboarding tours for unlimited pages. Work with any page builder, such as Divi, Elementor, Oxygen, Beaver Builder, Brizy, SeedProd, Themify, Gurenburg etc.
  * Version:           1.0.0
  * Author:            Kamal Hossan
- * Author URI:        https://kamalhossan.github.io/
+ * Author URI:        https://kamalhossan.github.io/s
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       user-tour-guide
  * Domain Path:       /languages
  */
 
-// If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
-}
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit; 
 
 // define file path declare anywhere
 define( 'USER_TOUR_GUIDE_PLUGIN_FILE', __FILE__ );
@@ -44,22 +42,31 @@ define( 'USER_TOUR_GUIDE_VERSION', '1.0.0' );
  * The code that runs during plugin activation.
  * This action is documented in includes/class-user-tour-guide-activator.php
  */
-function activate_user_tour_guide() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-user-tour-guide-activator.php';
-	User_Tour_Guide_Activator::activate();
+
+if(!function_exists('utgk_activate_user_tour_guide')){
+
+	function utgk_activate_user_tour_guide() {
+		require_once plugin_dir_path( __FILE__ ) . 'includes/class-user-tour-guide-activator.php';
+		User_Tour_Guide_Activator::activate();
+	}
 }
 
 /**
  * The code that runs during plugin deactivation.
  * This action is documented in includes/class-user-tour-guide-deactivator.php
  */
-function deactivate_user_tour_guide() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-user-tour-guide-deactivator.php';
-	User_Tour_Guide_Deactivator::deactivate();
+
+if(! function_exists('utgk_deactivate_user_tour_guide')) {
+
+	function utgk_deactivate_user_tour_guide() {
+		require_once plugin_dir_path( __FILE__ ) . 'includes/class-user-tour-guide-deactivator.php';
+		User_Tour_Guide_Deactivator::deactivate();
+	}
 }
 
-register_activation_hook( __FILE__, 'activate_user_tour_guide' );
-register_deactivation_hook( __FILE__, 'deactivate_user_tour_guide' );
+
+register_activation_hook( __FILE__, 'utgk_activate_user_tour_guide' );
+register_deactivation_hook( __FILE__, 'utgk_deactivate_user_tour_guide' );
 
 /**
  * The core plugin class that is used to define internationalization,
@@ -76,10 +83,13 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-user-tour-guide.php';
  *
  * @since    1.0.0
  */
-function run_user_tour_guide() {
 
-	$plugin = new User_Tour_Guide();
-	$plugin->run();
+if(! function_exists('utgk_run_user_tour_guide')){
+	function utgk_run_user_tour_guide() {
 
+		$plugin = new User_Tour_Guide();
+		$plugin->run();
+	
+	}
+	utgk_run_user_tour_guide();
 }
-run_user_tour_guide();

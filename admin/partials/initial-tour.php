@@ -11,6 +11,8 @@
  * @package    User_Tour_Guide
  * @subpackage User_Tour_Guide/admin/partials
  */
+
+if ( ! defined( 'ABSPATH' ) ) exit; 
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->

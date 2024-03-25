@@ -25,7 +25,7 @@
  * @author     Kamal Kamal <kamal.hossan35@gmail.com>
  */
 
-
+ if ( ! defined( 'ABSPATH' ) ) exit; 
 class User_Tour_Guide_i18n {
 
 
