@@ -66,7 +66,7 @@ class User_Tour_Guide_Public {
 		$this->user_tour_guide_db_name = $db_name;
 
 		//register shortcode
-		add_shortcode( 'utg-user-tour-guide', array( $this, 'utgk_user_tour_guide_callback' ) );
+		add_shortcode( 'utgk-guide', array( $this, 'utgk_user_tour_guide_callback' ) );
 
 	}
 

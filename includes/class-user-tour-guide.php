@@ -214,10 +214,10 @@ class User_Tour_Guide {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 		// Ajax Actions
-		$this->loader->add_action( 'wp_ajax_utg_t', $plugin_public, 'utg_get_user_tour_data_from_db' );
-		$this->loader->add_action( 'wp_ajax_nopriv_utg_t', $plugin_public, 'utg_get_user_tour_data_from_db' );
-		$this->loader->add_action( 'wp_ajax_utg_change_user_meta', $plugin_public, 'utg_change_user_meta' );
-		$this->loader->add_action( 'wp_ajax_nopriv_utg_change_user_meta', $plugin_public, 'utg_change_user_meta' );
+		$this->loader->add_action( 'wp_ajax_utg_t', $plugin_public, 'utgk_get_user_tour_data_from_db' );
+		$this->loader->add_action( 'wp_ajax_nopriv_utg_t', $plugin_public, 'utgk_get_user_tour_data_from_db' );
+		$this->loader->add_action( 'wp_ajax_utg_change_user_meta', $plugin_public, 'utgk_change_user_meta' );
+		$this->loader->add_action( 'wp_ajax_nopriv_utg_change_user_meta', $plugin_public, 'utgk_change_user_meta' );
 
 	}
 
