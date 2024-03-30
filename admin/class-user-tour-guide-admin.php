@@ -308,7 +308,7 @@ class User_Tour_Guide_Admin {
 			// Enqueue your script here
 			wp_enqueue_script( 'bootstrap-script', plugin_dir_url( __FILE__ ) . 'js/bootstrap.bundle.min.js', array(), '5.3.2', false );
 
-			wp_enqueue_script( 'tour-ks', plugin_dir_url(USER_TOUR_GUIDE_PLUGIN_FILE) . 'public/js/tour.min.js', array(), $this->version, false );
+			wp_enqueue_script( 'tour-ks', plugin_dir_url(USER_TOUR_GUIDE_PLUGIN_FILE) . 'public/js/tourguide.min.js', array(), $this->version, false );
 
 			wp_enqueue_script( 'admin', plugin_dir_url( __FILE__ ) . 'js/user-tour-guide-admin.js', array(), $this->version, false );
 

@@ -171,7 +171,7 @@ class User_Tour_Guide_Public {
 
 		wp_enqueue_style( 'intro-style', plugin_dir_url(__FILE__) . 'css/tour.min.css', array(), $this->version, 'all' );
 		wp_enqueue_style( 'user-tour-guide-style', plugin_dir_url(__FILE__) . 'css/user-tour-guide-public.css', array(), $this->version, 'all' );
-		wp_enqueue_script( 'intro-script', plugin_dir_url(__FILE__) . 'js/tour.min.js', array(), $this->version, false );
+		wp_enqueue_script( 'intro-script', plugin_dir_url(__FILE__) . 'js/tourguide.min.js', array(), $this->version, false );
 		wp_enqueue_script( 'user-tour-public', plugin_dir_url( __FILE__ ) . 'js/user-tour-guide-public.js', array( 'jquery', 'intro-script' ), $this->version, false );
 
 		wp_localize_script( 'user-tour-public', 'utg_public_object', array(

@@ -76,3 +76,10 @@ Create tour:
 
 * [Github](https://github.com/kamalhossan/user-tour-guide)
 * [Get Help from Author](mailto:kamal.hossan35@gmail.com)
+
+== TourGuide JS ==
+
+[TourGuide Js](https://tourguidejs.com/) is an extremely powerful and flexible tour guide Javascript library for creating user tours and on-boarding steps for your apps and it is free to use! Unfortunately, it's not easy to integrate into a WordPress Site if you are a non-developer, but this plugin is here to help you with that.
+
+== Bootstrap ==
+[Bootstrap](https://getbootstrap.com/) is the most popular HTML, CSS, and JS framework for developing responsive, mobile first projects on the web.
